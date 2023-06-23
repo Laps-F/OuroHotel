@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
 
+import React from 'react';
 import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { useEffect, useState } from 'react';
 
+import Modal from './Components/Modal';
+import Register from './Components/Register';
+import Login from './Components/Login';
 import Card from "./Components/Card";
+
+import './App.css';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBOSSUxqm3Hqh-aXSmUTOLwDS_2Rimx1Zc",
@@ -20,6 +25,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 function App() {
+  const [openModal, setOpenModal] = useState(false);
+  const [currForm, setCurrentForm] = useState('register');
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [users, setUsers] = useState([]);
@@ -48,12 +55,34 @@ function App() {
     getHospedagens();
   }, [hospedagensCollection]);
 
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  }
+
+  function opModal() {
+    setOpenModal(!openModal);
+  }
+  
   function createUser(){
     addDoc(userCollectionRef, {name, email});
   }
 
   return (
-    <div>
+    <div className="App">
+      <header className="App-header">
+
+        <button onClick={()=> setOpenModal(true)}>
+          Cadastro
+        </button>
+
+        {/* <Modal isOpen={openModal} setClose={()=>{setOpenModal(!openModal)}}> */}
+        <Modal isOpen={openModal} setClose={opModal}>
+          {
+            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModal}/> : <Login />
+          }
+        </Modal>
+
+      </header>
       {/* <input type="text" placeholder="Name..." value={name} onChange={(e) => setName(e.target.value)}/>
       <input type="text" placeholder="Email..." value={email} onChange={(e) => setEmail(e.target.value)}/>
       <button onClick={createUser}>Create User</button> */}
