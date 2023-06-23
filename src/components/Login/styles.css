@@ -1,0 +1,44 @@
+.global, .regform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+}
+
+label {
+    text-align: left;
+    padding: 0.25rem 0;
+    border-top-left-radius: 5px;
+    margin-top: 10px;
+}
+
+input {
+    /* margin: 0.5rem 0; */
+    padding: 0.5rem;
+}
+
+a {
+    padding: 5px;
+    font-size: 10px;
+    color: red;
+}
+
+button {
+    background-color:rgb(1, 12, 4);
+    padding : 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.alreadyacc-button {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: black;
+}
+
