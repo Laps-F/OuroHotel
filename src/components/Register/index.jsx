@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './styles.css';
 
-const Register = ({onFormSwitch}) => {
+const Register = ({onFormSwitch, closeAfter}) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,29 +11,14 @@ const Register = ({onFormSwitch}) => {
   const [errorPassDif, setErrorPassDif] = useState(false);
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
-  const [errorPassConf, setErrorPassConf] = useState(false);
+  const [errorPassConf, setErrorPassConf] = useState(false); 
   
   const[handleOpen, setHandleOpen] = useState(false);
 
-  useEffect( () => {
-    // if(username.length === 0) {
-    //   setErrorName(true);
-    //   console.log("Please enter");
-    // }
-    // if (password !== conf_password)
-    //   setErrorPassDif(true);
-    
-
-  }, [username, password, email, conf_password])
 
   useEffect(() => {
     setHandleOpen(false);
   }, []);
-
-  function updateUsername(e){
-    setUsername(e.target.value);
-    setErrorName(false);
-  }
 
  function handleSubmit (e) {
     setHandleOpen(true);
@@ -55,9 +40,10 @@ const Register = ({onFormSwitch}) => {
       return ;
     
     alert("Usuário cadatrado com sucesso!");
+    closeAfter();
   }
 
-  function kl(e){
+  function confirmPassword(e){
     console.log("PASS",password);
     console.log("conf",e.target.value);
     if(password === e.target.value)
@@ -70,14 +56,13 @@ const Register = ({onFormSwitch}) => {
             <label htmlFor="username">Username</label>
             <input 
               value={username} 
-              // onChange={(e) => {setUsername(e.target.value); setErrorName(false)}}
-              onChange={updateUsername}
+              onChange={(e) => {setUsername(e.target.value); setErrorName(false)}}
               type="username" 
               placeholder="Username" 
               id='username' 
               name='username'
             />
-            {errorName & handleOpen === true ? <a>error</a> : <a></a>}
+            {errorName & handleOpen === true ? <a>É necessário fornecer um username</a> :<a></a>}
 
             <label htmlFor="email">Email</label>
             <input value={email} 
@@ -87,7 +72,7 @@ const Register = ({onFormSwitch}) => {
               id='email' 
               name='email'
             />
-
+            {errorEmail & handleOpen === true ? <a>É necessário fornecer um email</a> :<a></a>}
 
             <label htmlFor="password">Password</label>
             <input value={password} 
@@ -97,18 +82,20 @@ const Register = ({onFormSwitch}) => {
               id='password' 
               name='password'
             />
+            {errorPassConf & handleOpen === true ? <a>É necessário digitar uma senha</a> :<a></a>}
 
             <label htmlFor="passwordConfirm">Confirm Password</label>
             <input value={conf_password} 
-              onChange={(e) => {setConfPassword(e.target.value); setErrorConf(false); kl(e)}} 
+              onChange={(e) => {setConfPassword(e.target.value); setErrorConf(false); confirmPassword(e)}} 
               type="password_conf" 
               placeholder="Confirm Password" 
               id='password_conf' 
               name='password_conf'
             />
+            {errorConf & handleOpen === true ? <a>É necessário confirmar o password</a> : <a></a>}
 
             <button type='register' onClick={handleSubmit}>Registre-se</button>
-            {errorPassDif & handleOpen === true ? <a>error</a> : <a></a>}
+            {errorPassDif & handleOpen === true ? <a>Passwords diferentes</a> : <a></a>}
         </>
         <button className='alreadyacc-button'
           onClick={()=>onFormSwitch('login')}>Já tem uma conta? Faça Login

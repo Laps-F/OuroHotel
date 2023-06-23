@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import './App.css';
-import Modal from './components/modal';
-import Register from './components/register';
-import Login from './components/login';
+import Modal from './components/Modal';
+import Register from './components/Register';
+import Login from './components/Login';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -27,7 +27,7 @@ function App() {
         {/* <Modal isOpen={openModal} setClose={()=>{setOpenModal(!openModal)}}> */}
         <Modal isOpen={openModal} setClose={opModal}>
           {
-            currForm === 'register' ?  <Register onFormSwitch={toggleForm} /> : <Login />
+            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModal}/> : <Login />
           }
         </Modal>
 
