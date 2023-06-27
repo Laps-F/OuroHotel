@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React from 'react';
 
 import { useEffect, useState } from 'react';
@@ -10,20 +8,22 @@ import { DB } from "./constants/Database";
 import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
-import Card from "./components/Card";
 import './App.css';
+
+import CardList from './components/CardList';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
   const [currForm, setCurrentForm] = useState('register');
   const [hospedagens, setHospedagens] = useState([]);
 
-  // const hospendagensCollection = collection(DB, "hospedagens");
+  const hospendagensCollection = collection(DB, "hospedagens");
 
   useEffect(() => {
     const getHospedagens = async () => {
-      // const data = await getDocs(hospendagensCollection);
-      // setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      const data = await getDocs(hospendagensCollection);
+      console.log(data);
+      setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
 
     getHospedagens();
@@ -33,12 +33,10 @@ function App() {
     setCurrentForm(formName);
   }
 
-  function opModal() {
+  function opModalRegistro() {
     setOpenModal(!openModal);
     if(currForm === 'login')
       setCurrentForm('register');
-    else
-      setCurrentForm('login');
   }
   
   function closeModal(){
@@ -53,27 +51,15 @@ function App() {
           Cadastro
         </button>
 
-        <Modal isOpen={openModal} setClose={opModal}>
+        <Modal isOpen={openModal} setClose={opModalRegistro}>
           {
             currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={closeModal}/> : <Login />
           }
         </Modal>
 
       </header>
-      {
-        hospedagens.map((hospedagem) => {
-          return (
-            <Card 
-              nome={hospedagem.Hotel} 
-              endereco={hospedagem.Endereco} 
-              preco={hospedagem.PrecoDiaria} 
-              qtdcamas={hospedagem.QtdCamas} 
-              tipocama={hospedagem.TipoCamas}
-              foto={hospedagem.Foto}
-            />
-          );
-        })
-      }
+        
+      <CardList hospedagens={hospedagens}/>
       
     </div>
   );

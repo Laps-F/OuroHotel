@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
