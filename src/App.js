@@ -1,21 +1,48 @@
+import React from 'react';
 
-import { useState } from 'react';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from "firebase/firestore";
+
+import { DB } from "./constants/Database";
+
 import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
+import './App.css';
+
+import CardList from './components/CardList';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
   const [currForm, setCurrentForm] = useState('register');
+  const [hospedagens, setHospedagens] = useState([]);
+
+  const hospendagensCollection = collection(DB, "hospedagens");
+
+  useEffect(() => {
+    const getHospedagens = async () => {
+      const data = await getDocs(hospendagensCollection);
+      console.log(data);
+      setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+    }
+
+    getHospedagens();
+  }, []);
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   }
 
-  function opModal() {
+  function opModalRegistro() {
+    setOpenModal(!openModal);
+    if(currForm === 'login')
+      setCurrentForm('register');
+  }
+  
+  function closeModal(){
     setOpenModal(!openModal);
   }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -24,17 +51,16 @@ function App() {
           Cadastro
         </button>
 
-        {/* <Modal isOpen={openModal} setClose={()=>{setOpenModal(!openModal)}}> */}
-        <Modal isOpen={openModal} setClose={opModal}>
+        <Modal isOpen={openModal} setClose={opModalRegistro}>
           {
-            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModal}/> : <Login />
+            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={closeModal}/> : <Login />
           }
         </Modal>
 
       </header>
-
-      <div>
-      </div>
+        
+      <CardList hospedagens={hospedagens}/>
+      
     </div>
   );
 }
