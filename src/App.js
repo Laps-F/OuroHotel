@@ -21,10 +21,12 @@ function App() {
     <div className="App">
       <header className="App-header">
 
-        <button onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
+        <button className='initial-btn'
+          onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
           Login
         </button>
-        <button onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
+        <button className='initial-btn' 
+          onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
           Cadastro
         </button>
 
