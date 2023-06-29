@@ -4,8 +4,8 @@
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  color: black;
-  background-image: linear-gradient(79deg, rgb(253, 145, 68), rgb(255, 69, 66) 48%, rgb(255, 55, 55));
+  color: rgb(0, 0, 0);
+  background-image: linear-gradient(79deg, rgb(35, 15, 1), rgb(113, 2, 0) 48%, rgb(35, 15, 1));
 }
 
 .auth-form-conteiner, .login-form, .register-form {
@@ -43,8 +43,13 @@ button {
 
 .link-btn {
   background: none;
-  color: black;
+  color: rgb(0, 0, 0);
   text-decoration: underline;
+}
+
+.initial-btn{
+  background-color: rgb(101, 25, 25);
+  color: rgb(255, 255, 255);
 }
 
 a {
