@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './styles.css';
 
-const Register = ({onFormSwitch, closeAfter}) => {
+const Register = (props, {closeAfter}) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -51,9 +51,9 @@ const Register = ({onFormSwitch, closeAfter}) => {
   }
 
   return (
-    <div className='global'>
+    <div className='auth-form-conteiner'>
         <>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Nome de usuário</label>
             <input 
               value={username} 
               onChange={(e) => {setUsername(e.target.value); setErrorName(false)}}
@@ -62,7 +62,7 @@ const Register = ({onFormSwitch, closeAfter}) => {
               id='username' 
               name='username'
             />
-            {errorName & handleOpen === true ? <a>É necessário fornecer um username</a> :<a></a>}
+            {errorName & handleOpen === true ? <a>É necessário fornecer um nome de usuário</a> :<a></a>}
 
             <label htmlFor="email">Email</label>
             <input value={email} 
@@ -72,7 +72,7 @@ const Register = ({onFormSwitch, closeAfter}) => {
               id='email' 
               name='email'
             />
-            {errorEmail & handleOpen === true ? <a>É necessário fornecer um email</a> :<a></a>}
+            {errorEmail & handleOpen === true ? <a>É necessário fornecer um e-mail</a> :<a></a>}
 
             <label htmlFor="password">Password</label>
             <input value={password} 
@@ -84,7 +84,7 @@ const Register = ({onFormSwitch, closeAfter}) => {
             />
             {errorPassConf & handleOpen === true ? <a>É necessário digitar uma senha</a> :<a></a>}
 
-            <label htmlFor="passwordConfirm">Confirm Password</label>
+            <label htmlFor="passwordConfirm">Confirme a senha</label>
             <input value={conf_password} 
               onChange={(e) => {setConfPassword(e.target.value); setErrorConf(false); confirmPassword(e)}} 
               type="password_conf" 
@@ -92,13 +92,13 @@ const Register = ({onFormSwitch, closeAfter}) => {
               id='password_conf' 
               name='password_conf'
             />
-            {errorConf & handleOpen === true ? <a>É necessário confirmar o password</a> : <a></a>}
+            {errorConf & handleOpen === true ? <a>É necessário confirmar a senha</a> : <a></a>}
 
             <button type='register' onClick={handleSubmit}>Registre-se</button>
-            {errorPassDif & handleOpen === true ? <a>Passwords diferentes</a> : <a></a>}
+            {errorPassDif & handleOpen === true ? <a>Senhas diferentes</a> : <a></a>}
         </>
-        <button className='alreadyacc-button'
-          onClick={()=>onFormSwitch('login')}>Já tem uma conta? Faça Login
+        <button className='link-btn'
+          onClick={() => props.onFormSwitch('login')}>Já tem uma conta? Faça Login
         </button>
     </div>
   )
