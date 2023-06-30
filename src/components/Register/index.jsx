@@ -52,7 +52,8 @@ const Register = (props, {closeAfter}) => {
 
   return (
     <div className='auth-form-conteiner'>
-        <>
+        <h2>Cadastro</h2>
+        <form className='register-form' onSubmit={handleSubmit}>
             <label htmlFor="username">Nome de usuário</label>
             <input 
               value={username} 
@@ -96,7 +97,7 @@ const Register = (props, {closeAfter}) => {
 
             <button type='register' onClick={handleSubmit}>Registre-se</button>
             {errorPassDif & handleOpen === true ? <a>Senhas diferentes</a> : <a></a>}
-        </>
+        </form>
         <button className='link-btn'
           onClick={() => props.onFormSwitch('login')}>Já tem uma conta? Faça Login
         </button>
