@@ -6,18 +6,17 @@ function CardList({hospedagens}) {
     return (
       <div className="list">
         {hospedagens.map((hospedagem) => {
-        return (
-          <Card 
-            key={hospedagem.id}
-            nome={hospedagem.Hotel} 
-            endereco={hospedagem.Endereco} 
-            preco={hospedagem.PrecoDiaria} 
-            qtdcamas={hospedagem.QtdCamas} 
-            tipocama={hospedagem.TipoCamas}
-            foto={hospedagem.Foto}
-          />
-        );
-      })}
+          return (
+              <Card 
+                nome={hospedagem.Hotel} 
+                endereco={hospedagem.Endereco} 
+                preco={hospedagem.PrecoDiaria} 
+                qtdcamas={hospedagem.QtdCamas} 
+                tipocama={hospedagem.TipoCamas}
+                foto={hospedagem.Foto}
+              />
+          );
+        })}
       </div>
     );
 }
