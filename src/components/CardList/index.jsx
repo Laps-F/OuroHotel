@@ -1,5 +1,7 @@
 import Card from "../Card";
 
+import "./style.css";
+
 function CardList({hospedagens}) {
     return (
       <div className="list">
