@@ -39,6 +39,12 @@ function App() {
       setCurrentForm('register');
   }
 
+  function opModalLogin() {
+    setOpenModal(!openModal);
+    if(currForm === 'register')
+      setCurrentForm('login');
+  }
+
   function closeModal(){
     setOpenModal(!openModal);
   }
@@ -59,7 +65,7 @@ function App() {
         {/* <Modal isOpen={openModal} setClose={()=>{setOpenModal(!openModal)}}> */}
         <Modal isOpen={openModal} setClose={opModalRegistro}>
           {
-            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModalRegistro}/> : <Login onFormSwitch={toggleForm}/>
+            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModalRegistro}/> : <Login onFormSwitch={toggleForm} closeAfter={opModalLogin}/>
           }
         </Modal>
 

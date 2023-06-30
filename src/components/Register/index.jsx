@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './styles.css';
 
-const Register = (props, {closeAfter}) => {
+const Register = (props) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -40,7 +40,7 @@ const Register = (props, {closeAfter}) => {
       return ;
     
     alert("Usuário cadatrado com sucesso!");
-    closeAfter();
+    props.closeAfter();
   }
 
   function confirmPassword(e){
