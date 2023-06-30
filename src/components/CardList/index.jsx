@@ -8,6 +8,7 @@ function CardList({hospedagens}) {
         {hospedagens.map((hospedagem) => {
           return (
               <Card 
+                key={hospedagem.id}
                 nome={hospedagem.Hotel} 
                 endereco={hospedagem.Endereco} 
                 preco={hospedagem.PrecoDiaria} 

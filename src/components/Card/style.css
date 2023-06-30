@@ -1,5 +1,5 @@
 .card {
-    background-color: #30302b;
+    background-color: #ffffffc9;
     color: white;
     padding: 10px;
     margin: 10px;
@@ -8,8 +8,12 @@
     border-radius: 10px;
     cursor: pointer;
     height: auto;
-    width: 300px;
-    display:flexbox;
+    width: 80%;
+    display: flexbox;
     align-items: center;
     justify-content: space-around;
+}
+
+.text {
+    color: black;
 }
