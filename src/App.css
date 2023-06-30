@@ -2,21 +2,30 @@
   text-align: center;
   display: flex;
   min-height: 100vh;
-  align-items: center;
-  justify-content: center;
+  align-items:first baseline;
+  justify-content:left;
   color: rgb(0, 0, 0);
   background-image: linear-gradient(79deg, rgb(35, 15, 1), rgb(113, 2, 0) 48%, rgb(35, 15, 1));
+}
+
+.App-header{
+  text-align: center;
+  display: flex;
+  min-height: 10vh;
+  align-items:first baseline;
+  justify-content: left;
 }
 
 .auth-form-conteiner, .login-form, .register-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgb(88, 30, 30);
 }
 
 .auth-form-conteiner {
   padding: 5rem;
-  border: 1px solid white;
+  border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
   margin: 0.5rem;
 }
@@ -29,7 +38,7 @@ label {
 input {
   margin: 0.5rem 0;
   padding: 1rem;
-  border: none;
+  border:rgb(0, 0, 0);
   border-radius: 10px;
 }
 
@@ -50,6 +59,7 @@ button {
 .initial-btn{
   background-color: rgb(101, 25, 25);
   color: rgb(255, 255, 255);
+  padding: 10px;
 }
 
 a {
