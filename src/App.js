@@ -53,11 +53,11 @@ function App() {
     <div className="App">
       <header className="App-header">
 
-        <button className='initial-btn'
+        <button className='login-btn'
           onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
           Login
         </button>
-        <button className='initial-btn' 
+        <button className='cadastro-btn' 
           onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
           Cadastro
         </button>
