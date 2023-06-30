@@ -65,7 +65,7 @@ function App() {
 
       </header>
 
-      <CardList className="App-card" 
+      <CardList
         hospedagens={hospedagens}>
       </CardList>
 

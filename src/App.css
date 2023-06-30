@@ -17,14 +17,6 @@
   justify-content: center;
 }
 
-/* .App-card{
-  text-align: center;
-  display: flex;
-  min-height: 100vh;
-  align-items:first baseline;
-  justify-content:left;
-} */
-
 .auth-form-conteiner, .login-form, .register-form {
   display: flex;
   flex-direction: column;
