@@ -68,9 +68,7 @@ function App() {
       <CardList className="App-card" 
         hospedagens={hospedagens}>
       </CardList>
-      
-      <div>
-      </div>
+
     </div>
   );
 }
