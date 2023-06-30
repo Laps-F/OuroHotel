@@ -33,11 +33,9 @@
 }
 
 .auth-form-conteiner {
-  padding: 5rem;
   border: 5px solid rgb(0, 0, 0);
   border-radius: 20px;
   margin: 0.5rem;
-  height: auto;
 }
 
 label {
