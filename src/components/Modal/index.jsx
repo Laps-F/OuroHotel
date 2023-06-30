@@ -15,8 +15,8 @@ const MODAL_STYLE = {
     top : '50%',
     left : '50%',
     transform : 'translate(-50%, -50%)',
-    padding : '50px',
-    backgroundColor : '#fff',
+    padding : '5px',
+    backgroundColor : 'rgb(88, 30, 30)',
     borderRadius : '10px',
     color : 'black',
 }
@@ -30,7 +30,8 @@ export default function Modal({isOpen, children, setClose}) {
                     <div>
                         {children}
                     </div>
-                    <button onClick={setClose}>
+                    <button className='buttom-close' 
+                        onClick={setClose}>
                         Fechar
                     </button>
                 </div>
