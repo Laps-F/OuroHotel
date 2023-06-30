@@ -6,6 +6,7 @@
   justify-content:left;
   color: rgb(0, 0, 0); */
   background-image: url(op-image.jpg);
+  text-align: center;
 }
 
 .App-header{
@@ -16,13 +17,13 @@
   justify-content: center;
 }
 
-.App-card{
-  /* text-align: center;
+/* .App-card{
+  text-align: center;
   display: flex;
   min-height: 100vh;
   align-items:first baseline;
-  justify-content:left; */
-}
+  justify-content:left;
+} */
 
 .auth-form-conteiner, .login-form, .register-form {
   display: flex;
@@ -33,9 +34,10 @@
 
 .auth-form-conteiner {
   padding: 5rem;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 10px;
+  border: 10px solid rgb(0, 0, 0);
+  border-radius: 50px;
   margin: 0.5rem;
+  height: 400px;
 }
 
 label {
@@ -52,7 +54,7 @@ input {
 
 button {
   border: none;
-  background-color: rgb(202, 31, 12);
+  background-color: rgb(0, 0, 0);
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
@@ -69,6 +71,7 @@ button {
   color: rgb(255, 255, 255);
   padding: 20px;
   font-size: 15px;
+  margin: 5px;
 }
 
 a {
