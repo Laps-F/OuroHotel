@@ -1,10 +1,14 @@
 import Card from "../Card";
 
+import './style.css';
+
 function CardList({hospedagens}) {
     return (
-      hospedagens.map((hospedagem) => {
+      <div className="list">
+        {hospedagens.map((hospedagem) => {
         return (
           <Card 
+            key={hospedagem.id}
             nome={hospedagem.Hotel} 
             endereco={hospedagem.Endereco} 
             preco={hospedagem.PrecoDiaria} 
@@ -13,7 +17,8 @@ function CardList({hospedagens}) {
             foto={hospedagem.Foto}
           />
         );
-      })
+      })}
+      </div>
     );
 }
 

@@ -4,7 +4,7 @@ import './style.css'
 
 function Card({nome, endereco, preco, qtdcamas, tipocama, foto}) {
     return (
-        <div class="card">
+        <div className="card">
             <h1>Hotel: {nome}</h1>
             <p>Endereço: {endereco}</p>
             <p>Preço: R$ {preco}</p>
