@@ -14,7 +14,7 @@ label {
 }
 
 input {
-    /* margin: 0.5rem 0; */
+    margin: 0.5rem 0;
     padding: 0.5rem;
 }
 
@@ -25,20 +25,13 @@ a {
 }
 
 button {
-    background-color:rgb(1, 12, 4);
+    background-color:rgb(223, 228, 224);
     padding : 20px;
     border-radius: 50px;
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 10px;
     color: white;
+    display: inline-block;
+    content: "\00d7";
 }
-
-.alreadyacc-button {
-    border: none;
-    background: none;
-    text-decoration: underline;
-    cursor: pointer;
-    color: black;
-}
-

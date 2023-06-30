@@ -38,7 +38,7 @@ function App() {
     if(currForm === 'login')
       setCurrentForm('register');
   }
-  
+
   function closeModal(){
     setOpenModal(!openModal);
   }
@@ -47,20 +47,28 @@ function App() {
     <div className="App">
       <header className="App-header">
 
-        <button onClick={()=> setOpenModal(true)}>
+        <button className='initial-btn'
+          onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
+          Login
+        </button>
+        <button className='initial-btn' 
+          onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
           Cadastro
         </button>
 
+        {/* <Modal isOpen={openModal} setClose={()=>{setOpenModal(!openModal)}}> */}
         <Modal isOpen={openModal} setClose={opModalRegistro}>
           {
-            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={closeModal}/> : <Login />
+            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModalRegistro}/> : <Login onFormSwitch={toggleForm}/>
           }
         </Modal>
 
       </header>
-        
-      <CardList hospedagens={hospedagens}/>
-      
+
+      <CardList
+        hospedagens={hospedagens}>
+      </CardList>
+
     </div>
   );
 }
