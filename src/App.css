@@ -1,12 +1,13 @@
 .App {
-  /* text-align: center;
-  display: flex;
-  min-height: 100vh;
-  align-items:first baseline;
-  justify-content:left;
-  color: rgb(0, 0, 0); */
   background-image: url(op-image.jpg);
   text-align: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
 }
 
 .App-header{

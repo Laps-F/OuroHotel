@@ -71,9 +71,7 @@ function App() {
 
       </header>
 
-      <CardList
-        hospedagens={hospedagens}>
-      </CardList>
+      <CardList hospedagens={hospedagens} />
 
     </div>
   );
