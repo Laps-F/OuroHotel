@@ -2,4 +2,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    max-height: 90%;
+    overflow-y: scroll;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
