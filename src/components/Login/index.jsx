@@ -33,6 +33,15 @@ const Login = (props) => {
     const handleSubmit = (e) => {
         setHandleOpen(true);
         e.preventDefault();
+        
+        users.map((user) => {
+          console.log(email);
+          console.log(user.email);
+          if(email === user.email && pass === user.password){
+            alert("Usuario logado");
+            props.closeAfter();
+          }
+        })
 
         if(email.length === 0){
           setErrorEmail(true);
@@ -42,18 +51,6 @@ const Login = (props) => {
     
         if(pass.length === 0 | email.length === 0)
           return ;
-    }
-
-    async function handleLogin(e){
-      e.preventDefault();
-      users.map((user) => {
-        console.log(email);
-        console.log(user.email);
-        if(email === user.email && pass === user.password){
-          alert("Usuario logado");
-          props.closeAfter();
-        }
-      })
     }
 
     return (
@@ -84,7 +81,7 @@ const Login = (props) => {
                   name="password"
                 />
                 {errorPassConf & handleOpen === true ? <a>É necessário digitar uma senha</a> :<a></a>}
-                <button type="submit" onClick={handleLogin}> Entrar </button>
+                <button type="submit"> Entrar </button>
             </form>
             <button className='link-btn' 
               onClick={() => props.onFormSwitch('register')}>Não possui uma conta? Crie uma aqui
