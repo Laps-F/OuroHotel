@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import { collection, getDocs } from "firebase/firestore";
+
+import { DB } from "../../constants/Database";
 
 import "./styles.css";
 
@@ -8,6 +11,20 @@ const Login = (props) => {
     const[handleOpen, setHandleOpen] = useState(false);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassConf, setErrorPassConf] = useState(false); 
+
+    const [users, setUsers] = useState([]);
+
+    const usersCollection = collection(DB, "users");
+
+    useEffect(() => {
+      const getUsers = async () => {
+        const data = await getDocs(usersCollection);
+        console.log(data);
+        setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+      }
+  
+      getUsers();
+    }, []);
 
     useEffect(() => {
       setHandleOpen(false);
@@ -25,6 +42,18 @@ const Login = (props) => {
     
         if(pass.length === 0 | email.length === 0)
           return ;
+    }
+
+    async function handleLogin(e){
+      e.preventDefault();
+      users.map((user) => {
+        console.log(email);
+        console.log(user.email);
+        if(email === user.email && pass === user.password){
+          alert("Usuario logado");
+          props.closeAfter();
+        }
+      })
     }
 
     return (
@@ -55,7 +84,7 @@ const Login = (props) => {
                   name="password"
                 />
                 {errorPassConf & handleOpen === true ? <a>É necessário digitar uma senha</a> :<a></a>}
-                <button type="submit"> Entrar </button>
+                <button type="submit" onClick={handleLogin}> Entrar </button>
             </form>
             <button className='link-btn' 
               onClick={() => props.onFormSwitch('register')}>Não possui uma conta? Crie uma aqui
