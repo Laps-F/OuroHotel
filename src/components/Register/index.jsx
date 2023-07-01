@@ -1,4 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import { collection, addDoc } from "firebase/firestore";
+
+import { DB } from "../../constants/Database";
+
 import './styles.css';
 
 const Register = (props) => {
@@ -15,6 +19,7 @@ const Register = (props) => {
   
   const[handleOpen, setHandleOpen] = useState(false);
 
+  const usersCollection = collection(DB, "users");
 
   useEffect(() => {
     setHandleOpen(false);
@@ -40,7 +45,16 @@ const Register = (props) => {
       return ;
     
     alert("Usuário cadatrado com sucesso!");
+    createUser();
     props.closeAfter();
+  }
+
+  async function createUser() {
+    await addDoc(usersCollection, {
+      email,
+      username,
+      password,
+    });
   }
 
   function confirmPassword(e){
