@@ -23,12 +23,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(88, 30, 30);
+  background-color: #3e1d00e0;
 }
 
 .auth-form-conteiner {
-  border: 5px solid rgb(0, 0, 0);
-  border-radius: 20px;
   margin: 0.5rem;
 }
 

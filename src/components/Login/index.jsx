@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
+import "./styles.css";
+
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -27,7 +29,13 @@ const Login = (props) => {
 
     return (
         <div className='auth-form-conteiner'>
-            <h2>Login</h2>
+            <div className="modal-header">
+              <h2>Login</h2>
+              <button onClick={props.closeAfter} className="close-btn">
+                <img src={require("../../constants/images/CloseRed.webp")} width="30"/>
+              </button>
+            </div>
+            
             <form className='login-form' onSubmit={handleSubmit}>
                 <label htmlFor="email">Digite seu e-mail</label>
                 <input value={email} 

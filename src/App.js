@@ -61,7 +61,7 @@ function App() {
           Cadastro
         </button>
 
-        <Modal isOpen={openModal} setClose={opModalRegistro}>
+        <Modal isOpen={openModal}>
           {
             currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModalRegistro}/> : <Login onFormSwitch={toggleForm} closeAfter={opModalLogin}/>
           }
