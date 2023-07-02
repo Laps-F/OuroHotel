@@ -4,13 +4,22 @@ import './style.css'
 
 function Card({nome, endereco, preco, qtdcamas, tipocama, foto}) {
     return (
-        <div class="card">
-            <h1>Hotel: {nome}</h1>
-            <p>Endereço: {endereco}</p>
-            <p>Preço: R$ {preco}</p>
-            <p>Número de Camas: {qtdcamas}</p>
-            <p>Tipo das Camas: {tipocama}</p>
-            <img src={foto} alt="Foto" width="250"/>
+        <div className="card">
+            <div className="image-container">
+                <img src={foto} alt="Foto" width="250" className="imagem"/>
+            </div>
+            <div>
+                <div className="title-container">
+                    <h1 className="text">{nome}</h1>
+                </div>
+                <div className="info-container">
+                    <p className="text info">{endereco}</p>
+                    <p className="text info">{qtdcamas} cama(s) de {tipocama}</p>
+                </div>
+            </div>
+            <div className="price-container">
+                <p className="text">R$ {preco}</p>
+            </div>
         </div>
     );
 }
