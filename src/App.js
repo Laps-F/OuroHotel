@@ -65,15 +65,11 @@ function App() {
   }
 
   function handleName(email) {
-    console.log(email);
     users.map((user) => {
       console.log(user.email)
       console.log(email)
       if(user.email === email){
         setName(user.username)
-        console.log("teste")
-
-        console.log(user.username)
       }
     })
   }
