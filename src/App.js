@@ -16,8 +16,12 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   const [currForm, setCurrentForm] = useState('register');
   const [hospedagens, setHospedagens] = useState([]);
+  const [userLogged, setUserLogged] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [name, setName] = useState("");
 
   const hospendagensCollection = collection(DB, "hospedagens");
+  const usersCollection = collection(DB, "users");
 
   useEffect(() => {
     const getHospedagens = async () => {
@@ -25,7 +29,13 @@ function App() {
       console.log(data);
       setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
+    const getUsers = async () => {
+      const data = await getDocs(usersCollection);
+      console.log(data);
+      setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+    }
 
+    getUsers();
     getHospedagens();
   }, []);
 
@@ -45,29 +55,72 @@ function App() {
       setCurrentForm('login');
   }
 
+  function loginHandler(email) {
+    setUserLogged(true);
+    handleName(email);
+  }
+
+  function loggoutHandler() {
+    setUserLogged(false);
+  }
+
+  function handleName(email) {
+    console.log(email);
+    users.map((user) => {
+      console.log(user.email)
+      console.log(email)
+      if(user.email === email){
+        setName(user.username)
+        console.log("teste")
+
+        console.log(user.username)
+      }
+    })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
 
-        <div className="logo-container">
-          <img src={require("./constants/images/Logo.jpeg")} alt="Logo" width="100" className="logo"/>
-        </div>
-        <button className='login-btn'
-          onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
-          Login
-        </button>
-        <button className='cadastro-btn' 
-          onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
-          Cadastro
-        </button>
-
-        <Modal isOpen={openModal}>
+        <div className="header-container">
+          <div className="logo-container">
+            <img src={require("./constants/images/Logo.jpeg")} alt="Logo" width="100" className="logo"/>
+          </div> 
           {
-            currForm === 'register' ?  <Register onFormSwitch={toggleForm} closeAfter={opModalRegistro}/> : <Login onFormSwitch={toggleForm} closeAfter={opModalLogin}/>
+            userLogged ? 
+            <div className='logged-container'>
+              <p className='textLog'>{name},</p>
+              <button className='link-btn' 
+                onClick={loggoutHandler}>Deseja Sair?
+              </button>
+            </div> :
+            <div>
+              <button className='login-btn'
+                onClick={()=> {setOpenModal(true); setCurrentForm('login')}}>
+                Login
+              </button>
+              <button className='cadastro-btn' 
+                onClick={()=> {setOpenModal(true); setCurrentForm('register')}}>
+                Cadastro
+              </button>
+            </div>
+          }
+        </div>
+      </header>
+      <Modal isOpen={openModal}>
+          {
+            currForm === 'register' ?  
+            <Register 
+              onFormSwitch={toggleForm} 
+              closeAfter={opModalRegistro}
+            /> : 
+            <Login 
+              onFormSwitch={toggleForm} 
+              closeAfter={opModalLogin} 
+              loginHandle={loginHandler} 
+            />
           }
         </Modal>
-      </header>
-
       <CardList hospedagens={hospedagens} />
 
     </div>

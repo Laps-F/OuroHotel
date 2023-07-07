@@ -35,11 +35,9 @@ const Login = (props) => {
         e.preventDefault();
         
         users.map((user) => {
-          console.log(email);
-          console.log(user.email);
           if(email === user.email && pass === user.password){
-            alert("Usuario logado");
             props.closeAfter();
+            props.loginHandle(email);
           }
         })
 
