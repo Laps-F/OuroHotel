@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { collection, addDoc, getDocs} from "firebase/firestore";
+import { collection, addDoc} from "firebase/firestore";
 
 import { DB } from "../../constants/Database";
 
 import './styles.css';
 
 const Register = (props) => {
-  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,16 +20,6 @@ const Register = (props) => {
   const[handleOpen, setHandleOpen] = useState(false);
 
   const usersCollection = collection(DB, "users");
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollection);
-      console.log(data);
-      setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-    }
-
-    getUsers();
-  }, []);
   
   useEffect(() => {
     setHandleOpen(false);
@@ -56,7 +45,7 @@ const Register = (props) => {
       return ;
 
     var verif = 0;
-    users.map((user) => {
+    props.users.map((user) => {
       console.log(user.email)
       console.log(email)
       if(user.email === email){

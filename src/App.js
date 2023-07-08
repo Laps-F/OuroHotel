@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, arrayUnion} from "firebase/firestore";
 
 import { DB } from "./constants/Database";
 
@@ -74,6 +74,20 @@ function App() {
     })
   }
 
+  // async function teste(){
+  //   await setDoc(doc(DB, 'users', 'S8Myn07MxPCch1GYddmE'), {
+  //     email: 'maurolaps@gmail.com',
+  //     password: "345",
+  //     username: 'Laps',
+  //   });
+  // }
+
+  async function reservaHandle(reserva) {
+    await setDoc(doc(DB, 'hospedagens', reserva), {
+      Reservas: arrayUnion({reservado: true, data: "data x"})
+    }, { merge: true });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -104,21 +118,22 @@ function App() {
         </div>
       </header>
       <Modal isOpen={openModal}>
-          {
-            currForm === 'register' ?  
-            <Register 
-              onFormSwitch={toggleForm} 
-              closeAfter={opModalRegistro}
-            /> : 
-            <Login 
-              onFormSwitch={toggleForm} 
-              closeAfter={opModalLogin} 
-              loginHandle={loginHandler} 
-            />
-          }
-        </Modal>
-      <CardList hospedagens={hospedagens} />
-
+        {
+          currForm === 'register' ?  
+          <Register 
+            onFormSwitch={toggleForm} 
+            closeAfter={opModalRegistro}
+            users={users}
+          /> : 
+          <Login 
+            onFormSwitch={toggleForm} 
+            closeAfter={opModalLogin} 
+            loginHandle={loginHandler} 
+            users={users}
+          />
+        }
+      </Modal>
+      <CardList hospedagens={hospedagens} reservar={reservaHandle}/>
     </div>
   );
 }

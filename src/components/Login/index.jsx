@@ -1,7 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { collection, getDocs } from "firebase/firestore";
-
-import { DB } from "../../constants/Database";
 
 import "./styles.css";
 
@@ -12,20 +9,6 @@ const Login = (props) => {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassConf, setErrorPassConf] = useState(false); 
 
-    const [users, setUsers] = useState([]);
-
-    const usersCollection = collection(DB, "users");
-
-    useEffect(() => {
-      const getUsers = async () => {
-        const data = await getDocs(usersCollection);
-        console.log(data);
-        setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-      }
-  
-      getUsers();
-    }, []);
-
     useEffect(() => {
       setHandleOpen(false);
     }, []);
@@ -34,7 +17,7 @@ const Login = (props) => {
         setHandleOpen(true);
         e.preventDefault();
         
-        users.map((user) => {
+        props.users.map((user) => {
           if(email === user.email && pass === user.password){
             props.closeAfter();
             props.loginHandle(email);
