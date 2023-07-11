@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'
 
 function Card({
@@ -11,11 +11,30 @@ function Card({
     tipocama, 
     foto, 
     datas, 
+    vagas,
     reservar
     }) {
 
-    function teste(){
-        reservar(id);
+    const [disabled, setDisabled] = useState(false);
+
+    useEffect(() => {
+        const value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
+        if(value < datas.length){
+            setDisabled(false);
+        }
+        else
+            setDisabled(true);
+    }, [vagas]);
+
+    async function handleReserva(){
+        var value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
+        if(value < datas.length){
+            setDisabled(false);
+            await reservar(id, datas[0]);
+            alert("Reserva feita");
+        }
+        else
+            setDisabled(true);
     }
     return (
         <div className="card">
@@ -39,7 +58,11 @@ function Card({
                 <div className="price-container">
                     <p className="text">R$ {preco}</p>
                 </div>
-                <div className="price-container" onClick={teste}>
+                <div 
+                    className="price-container" 
+                    onClick={handleReserva} 
+                    style={ disabled ? {backgroundColor: "#e70d0d"} : {backgroundColor: "#1cb41c"}}
+                >
                     <p className="text">Reservar</p>
                 </div>
             </div>

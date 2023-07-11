@@ -43,6 +43,22 @@ function App() {
     setCurrentForm(formName);
   }
 
+  function recarregaPag(){
+    const getHospedagens = async () => {
+      const data = await getDocs(hospendagensCollection);
+      console.log(data);
+      setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+    }
+    const getUsers = async () => {
+      const data = await getDocs(usersCollection);
+      console.log(data);
+      setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+    }
+
+    getUsers();
+    getHospedagens();
+  }
+
   function opModalRegistro() {
     setOpenModal(!openModal);
     if(currForm === 'login')
@@ -66,8 +82,6 @@ function App() {
 
   function handleName(email) {
     users.map((user) => {
-      console.log(user.email)
-      console.log(email)
       if(user.email === email){
         setName(user.username)
       }
@@ -82,10 +96,12 @@ function App() {
   //   });
   // }
 
-  async function reservaHandle(reserva) {
+  async function reservaHandle(reserva, data) {
     await setDoc(doc(DB, 'hospedagens', reserva), {
-      Reservas: arrayUnion({reservado: true, data: "data x"})
+      Reservas: arrayUnion({reservado: true, data: {data}})
     }, { merge: true });
+
+    recarregaPag();
   }
 
   return (
@@ -124,6 +140,7 @@ function App() {
             onFormSwitch={toggleForm} 
             closeAfter={opModalRegistro}
             users={users}
+            recarrega={recarregaPag}
           /> : 
           <Login 
             onFormSwitch={toggleForm} 

@@ -7,7 +7,6 @@ function CardList({hospedagens, reservar}) {
       <div className="list">
         {hospedagens.map((hospedagem) => {
           return (
-            hospedagem.Reservas.some((reserva) => reserva.reservado === false) ?
             <Card 
               key={hospedagem.id}
               id={hospedagem.id}
@@ -19,7 +18,8 @@ function CardList({hospedagens, reservar}) {
               foto={hospedagem.Foto}
               datas={hospedagem.Datas}
               reservar={reservar}
-            /> : <div></div>
+              vagas={hospedagem.Reservas}
+            />
           );
         })}
       </div>
