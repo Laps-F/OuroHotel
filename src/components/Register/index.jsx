@@ -16,7 +16,8 @@ const Register = (props) => {
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassConf, setErrorPassConf] = useState(false); 
-  
+  const [errorEqualEmail ,setErrorEqualEmail] = useState(false);
+
   const[handleOpen, setHandleOpen] = useState(false);
 
   const usersCollection = collection(DB, "users");
@@ -40,24 +41,20 @@ const Register = (props) => {
     if(password !== conf_password)
       setErrorPassDif(true);
 
-
-    if(username.length === 0 | password.length === 0 | email.length === 0 | conf_password.length === 0 | password !== conf_password)
-      return ;
-
     var verif = 0;
     props.users.map((user) => {
-      console.log(user.email)
-      console.log(email)
       if(user.email === email){
+        setErrorEqualEmail(true);
         verif = 1;
       }
     })
 
-    if(verif === 1)
+    if(username.length === 0 | password.length === 0 | email.length === 0 | conf_password.length === 0 | password !== conf_password | verif === 1)
       return ;
 
     alert("Usuário cadatrado com sucesso!");
     createUser();
+    props.recarrega();
     props.closeAfter();
   }
 
@@ -70,8 +67,6 @@ const Register = (props) => {
   }
 
   function confirmPassword(e){
-    console.log("PASS",password);
-    console.log("conf",e.target.value);
     if(password === e.target.value)
       setErrorPassDif(false);
   }
@@ -109,7 +104,8 @@ const Register = (props) => {
             name='email'
           />
           {errorEmail & handleOpen === true ? <a>É necessário fornecer um e-mail</a> :<a></a>}
-
+          {errorEqualEmail & handleOpen === true ? <a>Esse email ja está cadastrado</a> :<a></a>}
+          
           <label htmlFor="password">Password</label>
           <input value={password} 
             className='input-field' 
