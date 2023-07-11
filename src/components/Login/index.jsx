@@ -1,30 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import { collection, getDocs } from "firebase/firestore";
-
-import { DB } from "../../constants/Database";
 
 import "./styles.css";
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const[handleOpen, setHandleOpen] = useState(false);
+    const [handleOpen, setHandleOpen] = useState(false);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassConf, setErrorPassConf] = useState(false); 
-
-    const [users, setUsers] = useState([]);
-
-    const usersCollection = collection(DB, "users");
-
-    useEffect(() => {
-      const getUsers = async () => {
-        const data = await getDocs(usersCollection);
-        console.log(data);
-        setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
-      }
-  
-      getUsers();
-    }, []);
+    const [errorLogin, setErrorLogin] = useState(false);
 
     useEffect(() => {
       setHandleOpen(false);
@@ -34,15 +18,6 @@ const Login = (props) => {
         setHandleOpen(true);
         e.preventDefault();
         
-        users.map((user) => {
-          console.log(email);
-          console.log(user.email);
-          if(email === user.email && pass === user.password){
-            alert("Usuario logado");
-            props.closeAfter();
-          }
-        })
-
         if(email.length === 0){
           setErrorEmail(true);
         }
@@ -50,6 +25,23 @@ const Login = (props) => {
           setErrorPassConf(true);
     
         if(pass.length === 0 | email.length === 0)
+          return ;
+        
+        var verif = 0;
+        props.users.map((user) => {
+          if(email === user.email && pass === user.password)
+            verif = 1;
+        })
+
+        if(verif === 1){
+          props.closeAfter();
+          props.loginHandle(email);
+        }
+        else {
+          setErrorLogin(true);
+        }
+
+        if(verif === 0)
           return ;
     }
 
@@ -82,6 +74,7 @@ const Login = (props) => {
                 />
                 {errorPassConf & handleOpen === true ? <a>É necessário digitar uma senha</a> :<a></a>}
                 <button type="submit"> Entrar </button>
+                {errorLogin & handleOpen === true ? <a>Email ou Senha incorretos</a> :<a></a>}
             </form>
             <button className='link-btn' 
               onClick={() => props.onFormSwitch('register')}>Não possui uma conta? Crie uma aqui
