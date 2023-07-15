@@ -19,6 +19,7 @@
     background-color: rgba(28, 180, 28, 0.993);
     border-radius: 10px;
     width: 100px;
+    margin-top: 20px;
 }
 
 .info-container {
@@ -46,4 +47,9 @@
 
 .text {
     color: black;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
 }
