@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import Modal from '../Modal';
+import Confirmation from '../Confirmation';
 import './style.css'
 
 function Card({
@@ -16,6 +18,7 @@ function Card({
     }) {
 
     const [disabled, setDisabled] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
@@ -60,12 +63,16 @@ function Card({
                 </div>
                 <div 
                     className="price-container" 
-                    onClick={handleReserva} 
+                    //onClick={handleReserva}
+                    onClick={()=> setOpenModal(true)} 
                     style={ disabled ? {backgroundColor: "#e70d0d"} : {backgroundColor: "#1cb41c"}}
                 >
                     <p className="text">Reservar</p>
                 </div>
             </div>
+            <Modal isOpen={openModal}>
+                <Confirmation></Confirmation>
+            </Modal>
         </div>
     );
 }
