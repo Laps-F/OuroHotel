@@ -15,11 +15,12 @@ function Card({
     datas, 
     vagas,
     reservar
-    }) {
+    }){
 
     const [disabled, setDisabled] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [fDatas, setfDatas] = useState([]);
+    const [condition, setCondition] = useState(false);
 
     useEffect(() => {
         const value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
@@ -40,7 +41,6 @@ function Card({
             const fdata = `${data.toDate().getDate()}/${data.toDate().getMonth() + 1}/${data.toDate().getFullYear()}`;
             newDate = [...newDate, fdata];
         })
-        //const filtered = newDate.filter((item, index) => newDate.indexOf(item) === index);
         const filtered = [...new Set(newDate)];
         // const availableDatas = filtered.filter(item => vagas.map((vaga) => {
         //     const tempdata = `${vaga.data.data.toDate().getDate()}/${vaga.data.data.toDate().getMonth() + 1}/${vaga.data.data.toDate().getFullYear()}`;
@@ -61,6 +61,10 @@ function Card({
         setfDatas(newArray);
     }
 
+    function closeModal() {
+        setOpenModal(!openModal);
+    }    
+
     // async function handleReserva(){
     //     var value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
     //     if(value < datas.length){
@@ -71,6 +75,24 @@ function Card({
     //     else
     //         setDisabled(true);
     // }
+
+    function conditionButton(){
+
+    }
+
+    const handleButton = () => {
+        if(fDatas.length === 0){
+            return;
+        }
+        setOpenModal(true);
+        // console.log(fDatas);
+        // if(fDatas.length === 0){
+        //     setCondition(true);
+        // }
+        
+    }
+
+
 
     return (
         <div className="card">
@@ -100,15 +122,15 @@ function Card({
                 </div>
                 <div 
                     className="price-container" 
-                    //onClick={handleReserva}
-                    onClick={()=> setOpenModal(true)} 
+                    disabled={fDatas.length === 0}
+                    onClick={handleButton} 
                     style={ disabled ? {backgroundColor: "#e70d0d"} : {backgroundColor: "#1cb41c"}}
                 >
                     <p className="text">Reservar</p>
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Confirmation datadb={fDatas} reserva={reservar} id={id}></Confirmation>
+                <Confirmation datadb={fDatas} reserva={reservar} id={id} closeModal={closeModal}></Confirmation>
             </Modal>
         </div>
     );

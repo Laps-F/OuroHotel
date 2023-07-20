@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TextField from '@mui/material/TextField';
 
-const Confirmation = ({datadb, reserva, id}) => {
+const Confirmation = ({datadb, reserva, id, closeModal}) => {
     const [selectedDate, setSelectedDate] = useState(null);
     // const allowedDates = [
     //     new Date(2023, 6, 1), // 1 de julho de 2023
@@ -33,6 +33,11 @@ const Confirmation = ({datadb, reserva, id}) => {
             onClick={confirmReserva}
         >
             Confirmar
+        </button>
+        <button
+            onClick={closeModal}
+        >
+            Cancelar
         </button>
 
     </div>
