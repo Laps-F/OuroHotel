@@ -14,7 +14,7 @@ function Card({
     foto, 
     datas, 
     vagas,
-    reservar
+    reservar,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -31,9 +31,11 @@ function Card({
             setDisabled(true);
     }, [vagas]);
 
+
+
     useEffect(() => {
         formatData();
-    }, []);
+    }, [datas]);
 
     function formatData(){
         var newDate = [];
@@ -42,11 +44,6 @@ function Card({
             newDate = [...newDate, fdata];
         })
         const filtered = [...new Set(newDate)];
-        // const availableDatas = filtered.filter(item => vagas.map((vaga) => {
-        //     const tempdata = `${vaga.data.data.toDate().getDate()}/${vaga.data.data.toDate().getMonth() + 1}/${vaga.data.data.toDate().getFullYear()}`;
-        //     console.log(tempdata);
-        //     return tempdata === item;
-        // }));
         var availableDatas = [];
         for(var i = 0; i < filtered.length; i++) {
             var tempfiltered = filtered[i];
@@ -65,34 +62,17 @@ function Card({
         setOpenModal(!openModal);
     }    
 
-    // async function handleReserva(){
-    //     var value = vagas.filter((vaga) => { return vaga.reservado === true}).length;
-    //     if(value < datas.length){
-    //         setDisabled(false);
-    //         // await reservar(id, datas[0]);
-    //         // alert("Reserva feita");
-    //     }
-    //     else
-    //         setDisabled(true);
-    // }
-
     function conditionButton(){
 
     }
 
     const handleButton = () => {
         if(fDatas.length === 0){
+            setCondition(true);   
             return;
         }
-        setOpenModal(true);
-        // console.log(fDatas);
-        // if(fDatas.length === 0){
-        //     setCondition(true);
-        // }
-        
+        setOpenModal(true);    
     }
-
-
 
     return (
         <div className="card">
@@ -104,11 +84,6 @@ function Card({
                     <h1 className="text">{nome}</h1>
                 </div>
                 <div className="info-container">
-                    {/* {datas.map((data) => {
-                        const fdata = `${data.toDate().getDate()}/${data.toDate().getMonth() + 1}/${data.toDate().getFullYear()}`;
-                        const newDate = [...fDatas, fdata];
-                        return <p key={fdata} className='text info'>{fdata}</p>;
-                    })} */}
                     {fDatas.map((fDatas) => {
                         return <p key={fDatas} className='text info'>{fDatas}</p>;
                     })}
@@ -122,7 +97,7 @@ function Card({
                 </div>
                 <div 
                     className="price-container" 
-                    disabled={fDatas.length === 0}
+                    disabled={condition}
                     onClick={handleButton} 
                     style={ disabled ? {backgroundColor: "#e70d0d"} : {backgroundColor: "#1cb41c"}}
                 >

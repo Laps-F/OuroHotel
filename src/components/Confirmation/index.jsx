@@ -21,6 +21,7 @@ const Confirmation = ({datadb, reserva, id, closeModal}) => {
     };
   return (
     <div>
+        <p>Confirmação de Reserva</p>
         <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}

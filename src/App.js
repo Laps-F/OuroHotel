@@ -78,6 +78,7 @@ function App() {
 
   function loggoutHandler() {
     setUserLogged(false);
+    setName("");
   }
 
   function handleName(email) {
