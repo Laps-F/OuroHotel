@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TextField from '@mui/material/TextField';
 
-const Confirmation = ({datadb, reserva, id, closeModal}) => {
+const Confirmation = ({datadb, reserva, id, closeModal, username}) => {
     const [selectedDate, setSelectedDate] = useState(null);
     // const allowedDates = [
     //     new Date(2023, 6, 1), // 1 de julho de 2023
@@ -16,8 +16,10 @@ const Confirmation = ({datadb, reserva, id, closeModal}) => {
     };
       
     async function confirmReserva () {
-        await reserva(id, selectedDate);
-        alert("cu");
+        console.log('undefined', username)
+        await reserva(id, selectedDate, username);
+        alert("Reserva feita!");
+        closeModal();
     };
   return (
     <div>

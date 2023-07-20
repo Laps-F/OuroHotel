@@ -15,6 +15,7 @@ function Card({
     datas, 
     vagas,
     reservar,
+    username,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -62,12 +63,9 @@ function Card({
         setOpenModal(!openModal);
     }    
 
-    function conditionButton(){
-
-    }
-
     const handleButton = () => {
-        if(fDatas.length === 0){
+        console.log(username);
+        if(fDatas.length === 0 || username===""){
             setCondition(true);   
             return;
         }
@@ -76,6 +74,7 @@ function Card({
 
     return (
         <div className="card">
+            {console.log('aqui', username)}
             <div className="image-container">
                 <img src={foto} alt="Foto" width="250" className="imagem"/>
             </div>
@@ -105,7 +104,7 @@ function Card({
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Confirmation datadb={fDatas} reserva={reservar} id={id} closeModal={closeModal}></Confirmation>
+                <Confirmation datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal}></Confirmation>
             </Modal>
         </div>
     );
