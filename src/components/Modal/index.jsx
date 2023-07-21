@@ -15,13 +15,14 @@ const MODAL_STYLE = {
     top : '50%',
     left : '50%',
     transform : 'translate(-50%, -50%)',
-    padding : '5px',
-    backgroundColor : 'rgb(88, 30, 30)',
+    // padding : '5px',
+    border: "8px solid rgb(0, 0, 0)",
+    backgroundColor : 'rgb(62 29 0)',
     borderRadius : '10px',
     color : 'black',
 }
 
-export default function Modal({isOpen, children, setClose}) {
+export default function Modal({isOpen, children}) {
 
     if(isOpen) {
         return (
@@ -30,10 +31,6 @@ export default function Modal({isOpen, children, setClose}) {
                     <div>
                         {children}
                     </div>
-                    <button className='buttom-close' 
-                        onClick={setClose}>
-                        Fechar
-                    </button>
                 </div>
             </div>
         )

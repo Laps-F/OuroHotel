@@ -2,4 +2,14 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    max-height: 90%;
+    overflow-y: scroll;
+    position: fixed;
+    left: 0;
 }
+
+.list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }

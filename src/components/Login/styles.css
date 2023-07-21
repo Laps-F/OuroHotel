@@ -25,9 +25,8 @@ a {
 }
 
 button {
-    background-color:rgb(1, 12, 4);
-    padding : 20px;
-    border-radius: 50px;
+    background-color: black;
+    border-radius: 20px;
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -40,5 +39,19 @@ button {
     text-decoration: underline;
     cursor: pointer;
     color: black;
+}
+
+.modal-header {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.close-btn {
+    margin-left: 65px;
+    margin-right: 5px;
+    padding: 0;
+    border-radius: 50px;
+    height: 30px;
 }
 
