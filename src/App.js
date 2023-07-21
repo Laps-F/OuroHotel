@@ -78,12 +78,13 @@ function App() {
 
   function loggoutHandler() {
     setUserLogged(false);
+    setName("");
   }
 
   function handleName(email) {
     users.map((user) => {
       if(user.email === email){
-        setName(user.username)
+        setName(user.username);
       }
     })
   }
@@ -96,9 +97,9 @@ function App() {
   //   });
   // }
 
-  async function reservaHandle(reserva, data) {
+  async function reservaHandle(reserva, data, username) {
     await setDoc(doc(DB, 'hospedagens', reserva), {
-      Reservas: arrayUnion({reservado: true, data: {data}})
+      Reservas: arrayUnion({reservado: true, data: {data}, username: {username}})
     }, { merge: true });
 
     recarregaPag();
@@ -150,7 +151,7 @@ function App() {
           />
         }
       </Modal>
-      <CardList hospedagens={hospedagens} reservar={reservaHandle}/>
+      <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
     </div>
   );
 }
