@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, setDoc, doc, arrayUnion} from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue} from "firebase/firestore";
 import { CartOutline, HomeOutline } from 'react-ionicons'
 
 import { DB } from "./constants/Database";
@@ -112,10 +112,24 @@ function App() {
 
   async function reservaHandle(reserva, data, username) {
     await setDoc(doc(DB, 'hospedagens', reserva), {
-      Reservas: arrayUnion({reservado: true, data: {data}, username: {username}})
+      Reservas: arrayUnion({reservado: true, data: data, username: username})
     }, { merge: true });
 
     recarregaPag();
+  }
+
+  async function deleteReserva(reserva) {
+
+    alert("Deleting")
+    // await updateDoc(doc(DB, 'hospedagens', reserva), {
+    //   lista: FieldValue.arrayRemove('aaa')
+    // })
+    // reserva.update(
+    //   'lista', Firestore.FieldValue.arrayRemove('aaa')
+    // )
+    // .catch(function(error) {
+    //   console.error("Error removing document: ", error);
+    // });
   }
 
   return (
@@ -189,7 +203,7 @@ function App() {
         }
       </Modal>
       { cartList ?
-        <CartList hospedagens={hospedagens} user={name}/> :
+        <CartList hospedagens={hospedagens} user={name} deleteReserva={deleteReserva}/> :
         <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
       }
       

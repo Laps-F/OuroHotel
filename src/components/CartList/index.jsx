@@ -2,7 +2,7 @@ import Card from "../Card";
 
 import './style.css';
 
-function CartList({hospedagens, user}) {
+function CartList({hospedagens, user, deleteReserva}) {
 
     return (
         <div className="list">
@@ -10,13 +10,10 @@ function CartList({hospedagens, user}) {
                 return(
                     hospedagem.Reservas.length > 0 ?
                         hospedagem.Reservas.map((reserva) => {
-                            console.log(user)
-                            console.log("bd", reserva.username.username)
-                            console.log(reserva.username.username === user ? "aaaaa" : "bbbbb")
                             return (
-                                reserva.username.username === user ? 
+                                reserva.username === user ? 
                                 <Card 
-                                    key={hospedagem.id}
+                                    key={reserva.data}
                                     id={hospedagem.id}
                                     nome={hospedagem.Hotel} 
                                     endereco={hospedagem.Endereco} 
@@ -27,11 +24,13 @@ function CartList({hospedagens, user}) {
                                     datas={hospedagem.Datas}
                                     vagas={hospedagem.Reservas}
                                     username={user}
+                                    deleteReserva={deleteReserva}
+                                    screen={1}
                                 /> :
-                                <div></div>
+                                <div key={reserva.data}></div>
                             );
                         }) :
-                    <div></div>
+                    <div key={hospedagem.id}></div>
                 );
             })}
         </div>
