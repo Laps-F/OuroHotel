@@ -5,18 +5,12 @@ import TextField from '@mui/material/TextField';
 
 const Confirmation = ({datadb, reserva, id, closeModal, username}) => {
     const [selectedDate, setSelectedDate] = useState(null);
-    // const allowedDates = [
-    //     new Date(2023, 6, 1), // 1 de julho de 2023
-    //     new Date(2023, 6, 15), // 15 de julho de 2023
-    //     new Date(2023, 6, 30) // 30 de julho de 2023
-    // ];
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
       
     async function confirmReserva () {
-        console.log('undefined', username)
         await reserva(id, selectedDate, username);
         alert("Reserva feita!");
         closeModal();
