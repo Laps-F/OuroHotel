@@ -12,10 +12,10 @@ function Card({
     qtdcamas, 
     tipocama, 
     foto, 
-    datas, 
     vagas,
     reservar,
     username,
+    datas,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -74,7 +74,7 @@ function Card({
 
     return (
         <div className="card">
-            {console.log('aqui', username)}
+            {console.log("teste")}
             <div className="image-container">
                 <img src={foto} alt="Foto" width="250" className="imagem"/>
             </div>

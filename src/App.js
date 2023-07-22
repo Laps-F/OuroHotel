@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs, setDoc, doc, arrayUnion} from "firebase/firestore";
+import { CartOutline, HomeOutline } from 'react-ionicons'
 
 import { DB } from "./constants/Database";
 
@@ -11,6 +12,7 @@ import Login from './components/Login';
 import './App.css';
 
 import CardList from './components/CardList';
+import CartList from './components/CartList';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -19,6 +21,7 @@ function App() {
   const [userLogged, setUserLogged] = useState(false);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
+  const [cartList, setCartList] = useState(false);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -78,6 +81,7 @@ function App() {
 
   function loggoutHandler() {
     setUserLogged(false);
+    setCartList(false);
     setName("");
   }
 
@@ -87,6 +91,15 @@ function App() {
         setName(user.username);
       }
     })
+  }
+
+  function handleCart() {
+    console.log("clicou no carrinho");
+    setCartList(true);
+  }
+
+  function handleHome() {
+    setCartList(false);
   }
 
   // async function teste(){
@@ -117,6 +130,29 @@ function App() {
           {
             userLogged ? 
             <div className='logged-container'>
+              { !cartList ? 
+                <div className="titulo-container">
+                  <p className='titulo'>Home</p>
+                  <button onClick={handleCart} className="cart-outline">
+                    <CartOutline
+                      color={'#000000'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
+                </div> :
+                <div className='titulo-container'>
+                  <p className='titulo'>Carrinho</p>
+                  <button onClick={handleHome} className="cart-outline">
+                    <HomeOutline
+                      color={'#000000'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
+                </div>
+              }
+              
               <p className='textLog'>{name},</p>
               <button className='link-btn' 
                 onClick={loggoutHandler}>Deseja Sair?
@@ -152,7 +188,11 @@ function App() {
           />
         }
       </Modal>
-      <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
+      { cartList ?
+        <CartList hospedagens={hospedagens} user={name}/> :
+        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
+      }
+      
     </div>
   );
 }

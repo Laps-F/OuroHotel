@@ -6,8 +6,6 @@ function CardList({hospedagens, reservar, username}) {
     return (
       <div className="list">
         {hospedagens.map((hospedagem) => {
-          console.log('tamanho datas', hospedagem.Datas.length)
-          console.log('tamanho reservas', hospedagem.Reservas.length)
           return(
           hospedagem.Datas.length === hospedagem.Reservas.length ? <div></div> : 
               <Card 
