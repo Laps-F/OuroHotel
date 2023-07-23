@@ -46,10 +46,9 @@ function CardPadrao({
         const filtered = [...new Set(newDate)];
         var availableDatas = [];
         for(var i = 0; i < filtered.length; i++) {
-            var tempfiltered = filtered[i];
             for(var j = 0; j < vagas.length; j++) {
                 var tempdata = `${vagas[j].data.toDate().getDate()}/${vagas[j].data.toDate().getMonth() + 1}/${vagas[j].data.toDate().getFullYear()}`
-                if (tempfiltered === tempdata){
+                if (vagas[j].reservado === true){
                     availableDatas = [...availableDatas, tempdata];
                 }
             }
@@ -63,7 +62,6 @@ function CardPadrao({
     }    
 
     const handleButton = () => {
-        console.log(username);
         if(fDatas.length === 0 || username===""){
             setCondition(true);   
             return;

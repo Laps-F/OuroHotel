@@ -21,7 +21,7 @@ function CartList({hospedagens, user, deleteReserva}) {
                                     qtdcamas={hospedagem.QtdCamas} 
                                     tipocama={hospedagem.TipoCamas}
                                     foto={hospedagem.Foto}
-                                    datas={hospedagem.Datas}
+                                    datas={reserva.data}
                                     vagas={hospedagem.Reservas}
                                     username={user}
                                     deleteReserva={deleteReserva}

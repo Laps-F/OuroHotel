@@ -7,22 +7,23 @@ function CardList({hospedagens, reservar, username}) {
       <div className="list">
         {hospedagens.map((hospedagem) => {
           return(
-          hospedagem.Datas.length === hospedagem.Reservas.length ? <div key={hospedagem.id}></div> : 
-              <Card 
-                key={hospedagem.id}
-                id={hospedagem.id}
-                nome={hospedagem.Hotel} 
-                endereco={hospedagem.Endereco} 
-                preco={hospedagem.PrecoDiaria} 
-                qtdcamas={hospedagem.QtdCamas} 
-                tipocama={hospedagem.TipoCamas}
-                foto={hospedagem.Foto}
-                datas={hospedagem.Datas}
-                reservar={reservar}
-                vagas={hospedagem.Reservas}
-                username={username}
-                screen={0}
-              />
+            hospedagem.Reservas.some(reserv => reserv.reservado === false) ? 
+            <Card 
+              key={hospedagem.id}
+              id={hospedagem.id}
+              nome={hospedagem.Hotel} 
+              endereco={hospedagem.Endereco} 
+              preco={hospedagem.PrecoDiaria} 
+              qtdcamas={hospedagem.QtdCamas} 
+              tipocama={hospedagem.TipoCamas}
+              foto={hospedagem.Foto}
+              datas={hospedagem.Datas}
+              reservar={reservar}
+              vagas={hospedagem.Reservas}
+              username={username}
+              screen={0}
+            /> : 
+            <div key={hospedagem.id}></div>
           );
         })}
       </div>
