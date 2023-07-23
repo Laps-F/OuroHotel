@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, setDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue} from "firebase/firestore";
+import { collection, getDocs, getDoc, setDoc, addDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue, deleteField} from "firebase/firestore";
 import { CartOutline, HomeOutline } from 'react-ionicons'
 
 import { DB } from "./constants/Database";
@@ -110,26 +110,67 @@ function App() {
   //   });
   // }
 
-  async function reservaHandle(reserva, data, username) {
-    await setDoc(doc(DB, 'hospedagens', reserva), {
-      Reservas: arrayUnion({reservado: true, data: data, username: username})
-    }, { merge: true });
+  async function reservaHandle(reserva, date, user) {
+    const reserv = await getDoc(doc(DB, 'hospedagens', reserva));
+   
+    let array = reserv._document.data.value.mapValue.fields.Reservas;
+    let reservArray = [];
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      let dt = array.arrayValue.values[i].mapValue.fields.data.timestampValue;
+      dt = new Date(dt)
+      const fdata = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
+      const fdate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
+      if(fdate === fdata){
+        array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = true;
+        array.arrayValue.values[i].mapValue.fields.username.stringValue = user;
+      }
+      const reservado = array.arrayValue.values[i].mapValue.fields.reservado.booleanValue;
+      const username = array.arrayValue.values[i].mapValue.fields.username.stringValue;
+      const data = dt;
+      reservArray.push({reservado, username, data})
+    }
+
+    console.log("auiiiii", reservArray);
+
+    await updateDoc(doc(DB, 'hospedagens', reserva),{
+      Reservas: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'hospedagens', reserva), {
+        Reservas: reservArray
+      }, {merge: true});
+    })
     recarregaPag();
   }
 
-  async function deleteReserva(reserva) {
+  async function deleteReserva(reserva, date) {
+    const reserv = await getDoc(doc(DB, 'hospedagens', reserva));
+   
+    let array = reserv._document.data.value.mapValue.fields.Reservas;
+    let reservArray = [];
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      let dt = array.arrayValue.values[i].mapValue.fields.data.timestampValue;
+      dt = new Date(dt)
+      const fdata = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
+      if(date === fdata){
+        array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = false;
+        array.arrayValue.values[i].mapValue.fields.username.stringValue = "";
+      }
+      const reservado = array.arrayValue.values[i].mapValue.fields.reservado.booleanValue;
+      const username = array.arrayValue.values[i].mapValue.fields.username.stringValue;
+      const data = dt;
+      reservArray.push({reservado, username, data})
+    }
 
-    alert("Deleting")
-    // await updateDoc(doc(DB, 'hospedagens', reserva), {
-    //   lista: FieldValue.arrayRemove('aaa')
-    // })
-    // reserva.update(
-    //   'lista', Firestore.FieldValue.arrayRemove('aaa')
-    // )
-    // .catch(function(error) {
-    //   console.error("Error removing document: ", error);
-    // });
+    await updateDoc(doc(DB, 'hospedagens', reserva),{
+      Reservas: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'hospedagens', reserva), {
+        Reservas: reservArray
+      }, {merge: true});
+    });
+
+    recarregaPag();
   }
 
   return (

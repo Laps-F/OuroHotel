@@ -21,31 +21,16 @@ function CardReserva({
     }){
 
     const [openModal, setOpenModal] = useState(false);
-    const [fDatas, setfDatas] = useState([]);
+    const [fDatas, setfDatas] = useState();
 
     useEffect(() => {
         formatData();
     }, [datas]);
 
     function formatData(){
-        var newDate = [];
-        datas.map(async (data) => {
-            const fdata = `${data.toDate().getDate()}/${data.toDate().getMonth() + 1}/${data.toDate().getFullYear()}`;
-            newDate = [...newDate, fdata];
-        })
-        const filtered = [...new Set(newDate)];
-        var availableDatas = [];
-        for(var i = 0; i < filtered.length; i++) {
-            var tempfiltered = filtered[i];
-            for(var j = 0; j < vagas.length; j++) {
-                var tempdata = `${vagas[j].data.toDate().getDate()}/${vagas[j].data.toDate().getMonth() + 1}/${vagas[j].data.toDate().getFullYear()}`
-                if (tempfiltered === tempdata){
-                    availableDatas = [...availableDatas, tempdata];
-                }
-            }
-        }
-        const newArray = filtered.filter(item => !availableDatas.includes(item));
-        setfDatas(newArray);
+        const fdata = `${datas.toDate().getDate()}/${datas.toDate().getMonth() + 1}/${datas.toDate().getFullYear()}`;
+        setfDatas(fdata);
+
     }
 
     function closeModal() {
@@ -56,8 +41,8 @@ function CardReserva({
         if(fDatas.length === 0 || username===""){
             return;
         }
-        deleteReserva(id);
-        // setOpenModal(true);    
+        deleteReserva(id, fDatas, username);
+        alert("Reserva Cancelada!");  
     }
 
     return (
@@ -70,9 +55,7 @@ function CardReserva({
                     <h1 className="text">{nome}</h1>
                 </div>
                 <div className="info-container">
-                    {fDatas.map((fDatas) => {
-                        return <p key={fDatas} className='text info'>{fDatas}</p>;
-                    })}
+                    <p key={fDatas} className='text info'>{fDatas}</p>;
                     <p className="text info">{endereco}</p>
                     <p className="text info">{qtdcamas} cama(s) de {tipocama}</p>
                 </div>
