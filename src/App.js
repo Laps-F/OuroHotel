@@ -131,7 +131,6 @@ function App() {
       reservArray.push({reservado, username, data})
     }
 
-    console.log("auiiiii", reservArray);
 
     await updateDoc(doc(DB, 'hospedagens', reserva),{
       Reservas: deleteField()
