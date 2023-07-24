@@ -35,14 +35,11 @@ const Login = (props) => {
 
         if(verif === 1){
           props.closeAfter();
-          props.loginHandle(email);
+          props.loginHandle(email, pass);
         }
         else {
           setErrorLogin(true);
         }
-
-        if(verif === 0)
-          return ;
     }
 
     return (

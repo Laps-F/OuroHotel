@@ -21,11 +21,15 @@ function App() {
   const [userLogged, setUserLogged] = useState(false);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
 
+  const localEmail = localStorage.getItem("email");
+  const localPassword = localStorage.getItem("password");
+  const localName = localStorage.getItem("name");
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
@@ -36,6 +40,12 @@ function App() {
       const data = await getDocs(usersCollection);
       console.log(data);
       setUsers(data.docs.map(doc => ({...doc.data(), id: doc.id})));
+    }
+
+    if(localEmail){
+      setUserLogged(true);
+      setPassword(localPassword);
+      setName(localName);
     }
 
     getUsers();
@@ -74,41 +84,38 @@ function App() {
       setCurrentForm('login');
   }
 
-  function loginHandler(email) {
+  function loginHandler(email, pass) {
     setUserLogged(true);
+    setPassword(pass);
     handleName(email);
+    localStorage.setItem('email', email);
+    localStorage.setItem('password', pass);
   }
 
   function loggoutHandler() {
     setUserLogged(false);
     setCartList(false);
     setName("");
+    setPassword("");
+    localStorage.clear();
   }
 
   function handleName(email) {
     users.map((user) => {
       if(user.email === email){
         setName(user.username);
+        localStorage.setItem("name", user.username);
       }
     })
   }
 
   function handleCart() {
-    console.log("clicou no carrinho");
     setCartList(true);
   }
 
   function handleHome() {
     setCartList(false);
   }
-
-  // async function teste(){
-  //   await setDoc(doc(DB, 'users', 'S8Myn07MxPCch1GYddmE'), {
-  //     email: 'maurolaps@gmail.com',
-  //     password: "345",
-  //     username: 'Laps',
-  //   });
-  // }
 
   async function reservaHandle(reserva, date, user) {
     const reserv = await getDoc(doc(DB, 'hospedagens', reserva));
@@ -169,6 +176,42 @@ function App() {
       }, {merge: true});
     });
 
+    recarregaPag();
+  }
+
+  async function editReserva(reserva, Newdate, oldDate, user){
+    const reserv = await getDoc(doc(DB, 'hospedagens', reserva));
+   
+    let array = reserv._document.data.value.mapValue.fields.Reservas;
+    let reservArray = [];
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      let dt = array.arrayValue.values[i].mapValue.fields.data.timestampValue;
+      dt = new Date(dt)
+      const fdata = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
+      const fNewdate = `${Newdate.getDate()}/${Newdate.getMonth() + 1}/${Newdate.getFullYear()}`;
+  
+      if(fNewdate === fdata){
+        array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = true;
+        array.arrayValue.values[i].mapValue.fields.username.stringValue = user;
+      }
+
+      if(oldDate === fdata){
+        array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = false;
+        array.arrayValue.values[i].mapValue.fields.username.stringValue = "";
+      }
+      const reservado = array.arrayValue.values[i].mapValue.fields.reservado.booleanValue;
+      const username = array.arrayValue.values[i].mapValue.fields.username.stringValue;
+      const data = dt;
+      reservArray.push({reservado, username, data})
+    }
+
+    await updateDoc(doc(DB, 'hospedagens', reserva),{
+      Reservas: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'hospedagens', reserva), {
+        Reservas: reservArray
+      }, {merge: true});
+    })
     recarregaPag();
   }
 
@@ -243,7 +286,7 @@ function App() {
         }
       </Modal>
       { cartList ?
-        <CartList hospedagens={hospedagens} user={name} deleteReserva={deleteReserva}/> :
+        <CartList hospedagens={hospedagens} user={name} deleteReserva={deleteReserva} editReserva={editReserva}/> :
         <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
       }
       

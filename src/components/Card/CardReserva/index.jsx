@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import Modal from '../../Modal';
-import Confirmation from '../../Confirmation';
+import Edit from '../../Edit';
+
+import { CreateOutline } from 'react-ionicons'
 
 import './style.css'
 
@@ -14,14 +16,15 @@ function CardReserva({
     tipocama, 
     foto, 
     vagas,
-    reservar,
     username,
     datas,
     deleteReserva,
+    editReserva,
     }){
 
     const [openModal, setOpenModal] = useState(false);
     const [fDatas, setfDatas] = useState();
+    const [fVagas, setfVagas] = useState([]);
 
     useEffect(() => {
         formatData();
@@ -45,19 +48,41 @@ function CardReserva({
         alert("Reserva Cancelada!");  
     }
 
+    function handleEdit() {
+        const newArray = []
+        vagas.map((vaga) => {
+            const dt = `${vaga.data.toDate().getDate()}/${vaga.data.toDate().getMonth() + 1}/${vaga.data.toDate().getFullYear()}`;
+            if(dt !== fDatas && vaga.reservado === false){
+                newArray.push(dt);
+            }
+        })
+        setfVagas(newArray);
+        setOpenModal(true);    
+    }
+
     return (
         <div className="card">
             <div className="image-container">
                 <img src={foto} alt="Foto" width="250" className="imagem"/>
             </div>
             <div>
+                <CreateOutline
+                    onClick={handleEdit}
+                    className="edit"
+                    color={'#000000'} 
+                    height="25px"
+                    width="25px"
+                />
+            </div>
+            <div>
                 <div className="title-container">
-                    <h1 className="text">{nome}</h1>
+                    <h1 className="text">{nome}</h1>    
                 </div>
                 <div className="info-container">
-                    <p key={fDatas} className='text info'>{fDatas}</p>;
-                    <p className="text info">{endereco}</p>
+                    <p key={fDatas} className='text info'>Data Reservada: {fDatas}</p>
                     <p className="text info">{qtdcamas} cama(s) de {tipocama}</p>
+                    <p className="text info">{endereco}</p>
+
                 </div>
             </div>
             <div className='buttons'>
@@ -73,7 +98,18 @@ function CardReserva({
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Confirmation datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal}></Confirmation>
+                <Edit 
+                    datadb={fDatas}
+                    vagas={fVagas} 
+                    edit={editReserva} 
+                    id={id} 
+                    username={username} 
+                    closeModal={closeModal}
+                    nome={nome} 
+                    preco={preco}
+                    qtdcamas={qtdcamas}
+                    tipocama={tipocama} 
+                />
             </Modal>
         </div>
     );
