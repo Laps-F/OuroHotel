@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import Modal from '../../Modal';
-import Confirmation from '../../Confirmation';
+import Edit from '../../Edit';
+
+import { CreateOutline } from 'react-ionicons'
 
 import './style.css'
 
@@ -13,11 +15,11 @@ function CardReserva({
     qtdcamas, 
     tipocama, 
     foto, 
-    vagas,
     reservar,
     username,
     datas,
     deleteReserva,
+    editReserva,
     }){
 
     const [openModal, setOpenModal] = useState(false);
@@ -45,14 +47,27 @@ function CardReserva({
         alert("Reserva Cancelada!");  
     }
 
+    function handleEdit() {
+        setOpenModal(true);    
+    }
+
     return (
         <div className="card">
             <div className="image-container">
                 <img src={foto} alt="Foto" width="250" className="imagem"/>
             </div>
             <div>
+                <CreateOutline
+                    onClick={handleEdit}
+                    className="edit"
+                    color={'#000000'} 
+                    height="25px"
+                    width="25px"
+                />
+            </div>
+            <div>
                 <div className="title-container">
-                    <h1 className="text">{nome}</h1>
+                    <h1 className="text">{nome}</h1>    
                 </div>
                 <div className="info-container">
                     <p key={fDatas} className='text info'>{fDatas}</p>;
@@ -73,7 +88,7 @@ function CardReserva({
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Confirmation datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal}></Confirmation>
+                <Edit datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal} />
             </Modal>
         </div>
     );
