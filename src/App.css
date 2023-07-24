@@ -17,6 +17,7 @@
   align-items:first baseline;
   justify-content: space-between;
   background-color: #3e1d00e0;
+  color: white;
 }
 
 .auth-form-conteiner, .login-form, .register-form {
@@ -24,6 +25,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #3e1d00e0;
+  color:blanchedalmond;
 }
 
 .auth-form-conteiner {
@@ -58,7 +60,7 @@ button {
 
 .link-btn {
   background: none;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   text-decoration: underline;
   margin: 0;
 }
