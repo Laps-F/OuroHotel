@@ -189,7 +189,7 @@ function App() {
                   <p className='titulo'>Home</p>
                   <button onClick={handleCart} className="cart-outline">
                     <CartOutline
-                      color={'#000000'} 
+                      color={'#225,225,225'} 
                       height="40px"
                       width="40px"
                     />
@@ -199,7 +199,7 @@ function App() {
                   <p className='titulo'>Carrinho</p>
                   <button onClick={handleHome} className="cart-outline">
                     <HomeOutline
-                      color={'#000000'} 
+                      color={'#225,225,225'} 
                       height="40px"
                       width="40px"
                     />
@@ -209,7 +209,7 @@ function App() {
               
               <p className='textLog'>{name},</p>
               <button className='link-btn' 
-                onClick={loggoutHandler}>Deseja Sair?
+                onClick={loggoutHandler}>Deseja sair?
               </button>
             </div> :
             <div>
