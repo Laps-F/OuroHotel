@@ -1,29 +1,29 @@
 import Card from "../Card";
 
-import "./style.css";
+import './style.css';
 
 function CardList({hospedagens, reservar, username}) {
     return (
       <div className="list">
         {hospedagens.map((hospedagem) => {
-          console.log('tamanho datas', hospedagem.Datas.length)
-          console.log('tamanho reservas', hospedagem.Reservas.length)
           return(
-          hospedagem.Datas.length === hospedagem.Reservas.length ? <div></div> : 
-              <Card 
-                key={hospedagem.id}
-                id={hospedagem.id}
-                nome={hospedagem.Hotel} 
-                endereco={hospedagem.Endereco} 
-                preco={hospedagem.PrecoDiaria} 
-                qtdcamas={hospedagem.QtdCamas} 
-                tipocama={hospedagem.TipoCamas}
-                foto={hospedagem.Foto}
-                datas={hospedagem.Datas}
-                reservar={reservar}
-                vagas={hospedagem.Reservas}
-                username={username}
-              />
+            hospedagem.Reservas.some(reserv => reserv.reservado === false) ? 
+            <Card 
+              key={hospedagem.id}
+              id={hospedagem.id}
+              nome={hospedagem.Hotel} 
+              endereco={hospedagem.Endereco} 
+              preco={hospedagem.PrecoDiaria} 
+              qtdcamas={hospedagem.QtdCamas} 
+              tipocama={hospedagem.TipoCamas}
+              foto={hospedagem.Foto}
+              datas={hospedagem.Datas}
+              reservar={reservar}
+              vagas={hospedagem.Reservas}
+              username={username}
+              screen={0}
+            /> : 
+            <div key={hospedagem.id}></div>
           );
         })}
       </div>
