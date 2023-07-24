@@ -17,6 +17,7 @@ const Register = (props) => {
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassConf, setErrorPassConf] = useState(false); 
   const [errorEqualEmail ,setErrorEqualEmail] = useState(false);
+  const [errorEqualUsername, setErrorEqualUsername] = useState(false);
 
   const[handleOpen, setHandleOpen] = useState(false);
 
@@ -41,15 +42,23 @@ const Register = (props) => {
     if(password !== conf_password)
       setErrorPassDif(true);
 
-    var verif = 0;
+    let verif = 0;
     props.users.map((user) => {
       if(user.email === email){
         setErrorEqualEmail(true);
         verif = 1;
       }
     })
+    
+    let verif2 = 0;
+    props.users.map((user) => {
+      if(user.username === username){
+        setErrorEqualUsername(true);
+        verif2 = 1;
+      }
+    })
 
-    if(username.length === 0 | password.length === 0 | email.length === 0 | conf_password.length === 0 | password !== conf_password | verif === 1)
+    if(username.length === 0 | password.length === 0 | email.length === 0 | conf_password.length === 0 | password !== conf_password | verif === 1 | verif2 === 1)
       return ;
 
     alert("Usuário cadatrado com sucesso!");
@@ -93,8 +102,9 @@ const Register = (props) => {
             name='username'
           />
           {errorName & handleOpen === true ? <a>É necessário fornecer um nome de usuário</a> :<a></a>}
+          {errorEqualUsername & handleOpen === true ? <a>Esse usuário ja está cadastrado</a> :<a></a>}
 
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" style={{margin: "0px"}}>Email</label>
           <input value={email} 
             className='input-field'
             onChange={(e) => {setEmail(e.target.value); setErrorEmail(false)}}  
@@ -106,7 +116,7 @@ const Register = (props) => {
           {errorEmail & handleOpen === true ? <a>É necessário fornecer um e-mail</a> :<a></a>}
           {errorEqualEmail & handleOpen === true ? <a>Esse email ja está cadastrado</a> :<a></a>}
           
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password" style={{margin: "0px"}}>Password</label>
           <input value={password} 
             className='input-field' 
             onChange={(e) => {setPassword(e.target.value); setErrorPassConf(false)}}  

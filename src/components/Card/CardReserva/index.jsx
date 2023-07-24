@@ -49,9 +49,6 @@ function CardReserva({
     }
 
     function handleEdit() {
-        console.log(fDatas);
-        console.log(vagas);
-
         const newArray = []
         vagas.map((vaga) => {
             const dt = `${vaga.data.toDate().getDate()}/${vaga.data.toDate().getMonth() + 1}/${vaga.data.toDate().getFullYear()}`;
