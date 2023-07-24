@@ -15,7 +15,7 @@ function CardReserva({
     qtdcamas, 
     tipocama, 
     foto, 
-    reservar,
+    vagas,
     username,
     datas,
     deleteReserva,
@@ -24,6 +24,7 @@ function CardReserva({
 
     const [openModal, setOpenModal] = useState(false);
     const [fDatas, setfDatas] = useState();
+    const [fVagas, setfVagas] = useState([]);
 
     useEffect(() => {
         formatData();
@@ -48,6 +49,17 @@ function CardReserva({
     }
 
     function handleEdit() {
+        console.log(fDatas);
+        console.log(vagas);
+
+        const newArray = []
+        vagas.map((vaga) => {
+            const dt = `${vaga.data.toDate().getDate()}/${vaga.data.toDate().getMonth() + 1}/${vaga.data.toDate().getFullYear()}`;
+            if(dt !== fDatas && vaga.reservado === false){
+                newArray.push(dt);
+            }
+        })
+        setfVagas(newArray);
         setOpenModal(true);    
     }
 
@@ -88,7 +100,18 @@ function CardReserva({
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Edit datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal} />
+                <Edit 
+                    datadb={fDatas}
+                    vagas={fVagas} 
+                    edit={editReserva} 
+                    id={id} 
+                    username={username} 
+                    closeModal={closeModal}
+                    nome={nome} 
+                    preco={preco}
+                    qtdcamas={qtdcamas}
+                    tipocama={tipocama} 
+                />
             </Modal>
         </div>
     );

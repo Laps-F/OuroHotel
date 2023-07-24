@@ -174,14 +174,13 @@ function App() {
       dt = new Date(dt)
       const fdata = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
       const fNewdate = `${Newdate.getDate()}/${Newdate.getMonth() + 1}/${Newdate.getFullYear()}`;
-      const fOlddate = `${oldDate.getDate()}/${oldDate.getMonth() + 1}/${oldDate.getFullYear()}`;
-
+  
       if(fNewdate === fdata){
         array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = true;
         array.arrayValue.values[i].mapValue.fields.username.stringValue = user;
       }
 
-      if(fOlddate === fdata){
+      if(oldDate === fdata){
         array.arrayValue.values[i].mapValue.fields.reservado.booleanValue = false;
         array.arrayValue.values[i].mapValue.fields.username.stringValue = "";
       }
