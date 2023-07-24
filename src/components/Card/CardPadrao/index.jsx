@@ -79,11 +79,15 @@ function CardPadrao({
                     <h1 className="text">{nome}</h1>
                 </div>
                 <div className="info-container">
-                    {fDatas.map((fDatas) => {
-                        return <p key={fDatas} className='text info'>{fDatas}</p>;
-                    })}
-                    <p className="text info">{endereco}</p>
+                    <div className='text info'>Datas Disponíves:</div>
+                    <div className='datas'>
+                        {fDatas.map((fDatas) => {
+                            return <div key={fDatas} className='text info'>{fDatas}</div>
+                        })}
+                    </div>
                     <p className="text info">{qtdcamas} cama(s) de {tipocama}</p>
+                    <p className="text info">{endereco}</p>
+
                 </div>
             </div>
             <div className='buttons'>

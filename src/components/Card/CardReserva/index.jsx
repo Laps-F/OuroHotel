@@ -82,9 +82,10 @@ function CardReserva({
                     <h1 className="text">{nome}</h1>    
                 </div>
                 <div className="info-container">
-                    <p key={fDatas} className='text info'>{fDatas}</p>;
-                    <p className="text info">{endereco}</p>
+                    <p key={fDatas} className='text info'>Data Reservada: {fDatas}</p>
                     <p className="text info">{qtdcamas} cama(s) de {tipocama}</p>
+                    <p className="text info">{endereco}</p>
+
                 </div>
             </div>
             <div className='buttons'>
