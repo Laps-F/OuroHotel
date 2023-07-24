@@ -19,6 +19,7 @@ function Card({
     username,
     datas,
     deleteReserva,
+    editReserva,
     screen,
     }){
 
@@ -50,6 +51,7 @@ function Card({
             vagas={vagas}
             username={username}
             deleteReserva={deleteReserva}
+            editReserva={editReserva}
         />
     );
 }

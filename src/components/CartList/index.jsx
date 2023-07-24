@@ -2,7 +2,7 @@ import Card from "../Card";
 
 import './style.css';
 
-function CartList({hospedagens, user, deleteReserva}) {
+function CartList({hospedagens, user, deleteReserva, editReserva}) {
 
     return (
         <div className="list">
@@ -25,6 +25,7 @@ function CartList({hospedagens, user, deleteReserva}) {
                                     vagas={hospedagem.Reservas}
                                     username={user}
                                     deleteReserva={deleteReserva}
+                                    editReserva={editReserva}
                                     screen={1}
                                 /> :
                                 <div key={reserva.data}></div>
