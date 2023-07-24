@@ -123,6 +123,7 @@ function App() {
       reservArray.push({reservado, username, data})
     }
 
+
     await updateDoc(doc(DB, 'hospedagens', reserva),{
       Reservas: deleteField()
     }).then(async () => {
