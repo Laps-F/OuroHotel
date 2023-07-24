@@ -100,7 +100,18 @@ function CardPadrao({
                 </div>
             </div>
             <Modal isOpen={openModal}>
-                <Confirmation datadb={fDatas} reserva={reservar} id={id} username={username} closeModal={closeModal}></Confirmation>
+                <Confirmation 
+                    datadb={fDatas} 
+                    reserva={reservar} 
+                    id={id} 
+                    username={username} 
+                    closeModal={closeModal}
+                    nome={nome} 
+                    endereco={endereco}  
+                    preco={preco}
+                    qtdcamas={qtdcamas}
+                    tipocama={tipocama} 
+                ></Confirmation>
             </Modal>
         </div>
     );
