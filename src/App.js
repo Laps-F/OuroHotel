@@ -108,7 +108,6 @@ function App() {
     users.map((user) => {
       if(user.email === email){
         setName(user.username);
-        console.log(user.avalia)
         setRateArray(user.avalia);
         localStorage.setItem("name", user.username);
         localStorage.setItem("rate", JSON.stringify(user.avalia));
@@ -166,9 +165,6 @@ function App() {
         }
       }
     }
-
-    console.log("total", notaTotal)
-    console.log("contador", contador)
 
     const rate = Math.round(notaTotal / contador);
     
