@@ -67,11 +67,17 @@ const Register = (props) => {
     props.closeAfter();
   }
 
+  let avalia = []
+  props.hospedagens.map((hosp) => {
+    avalia.push({rate: 0, nome: hosp.Hotel})
+  })
+
   async function createUser() {
     await addDoc(usersCollection, {
       email,
       username,
       password,
+      avalia,
     });
   }
 

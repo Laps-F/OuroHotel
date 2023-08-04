@@ -31,7 +31,7 @@ function App() {
   const localEmail = localStorage.getItem("email");
   const localPassword = localStorage.getItem("password");
   const localName = localStorage.getItem("name");
-  const localRate = JSON.parse(localStorage.getItem("rate"));
+  const localRate = JSON.parse(localStorage.getItem("rate") || null);
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
@@ -108,10 +108,10 @@ function App() {
     users.map((user) => {
       if(user.email === email){
         setName(user.username);
+        console.log(user.avalia)
         setRateArray(user.avalia);
         localStorage.setItem("name", user.username);
         localStorage.setItem("rate", JSON.stringify(user.avalia));
-        console.log(JSON.stringify(user.avalia));
       }
     })
   }
@@ -190,7 +190,7 @@ function App() {
         localStorage.setItem("rate", JSON.stringify(uservArray));
       }
     })
-    
+
     alert("Hotel Avaliado com Sucesso!");
   }
 
@@ -352,6 +352,7 @@ function App() {
             onFormSwitch={toggleForm} 
             closeAfter={opModalRegistro}
             users={users}
+            hospedagens={hospedagens}
             recarrega={recarregaPag}
           /> : 
           <Login 
