@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../Modal';
 import Confirmation from '../../Confirmation';
+import Rating  from '../../Rating/RatingHome';
 
 import './style.css'
 
@@ -17,6 +18,7 @@ function CardPadrao({
     reservar,
     username,
     datas,
+    rate,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -101,6 +103,9 @@ function CardPadrao({
                     style={ disabled ? {backgroundColor: "#e70d0d"} : {backgroundColor: "#1cb41c"}}
                 >
                     <p className="text">Reservar</p>
+                </div>
+                <div className="rating">
+                    <Rating hotel={nome} rating={rate}/>
                 </div>
             </div>
             <Modal isOpen={openModal}>

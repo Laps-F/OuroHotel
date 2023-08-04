@@ -20,10 +20,10 @@
     background-color: rgba(28, 180, 28, 0.993);
     border-radius: 10px;
     width: 100px;
-    margin-top: 20px;
-}
+    margin-top: 5px;
+    }
 
-.edit {
+.edit-container {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -60,4 +60,11 @@
 .buttons {
     display: flex;
     flex-direction: column;
+}
+
+.rating {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
 }

@@ -4,8 +4,6 @@ import React from 'react';
 import CardPadrao from './CardPadrao';
 import CardReserva from './CardReserva';
 
-import './style.css'
-
 function Card({
     id,
     nome, 
@@ -21,6 +19,9 @@ function Card({
     deleteReserva,
     editReserva,
     screen,
+    rate,
+    avalia,
+    rateArray,
     }){
 
     return (
@@ -37,6 +38,7 @@ function Card({
             reservar={reservar}
             vagas={vagas}
             username={username}
+            rate={rate}
         /> :
         <CardReserva 
             id={id}
@@ -52,6 +54,8 @@ function Card({
             username={username}
             deleteReserva={deleteReserva}
             editReserva={editReserva}
+            avalia={avalia}
+            rateArray={rateArray}
         />
     );
 }
