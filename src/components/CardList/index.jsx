@@ -22,6 +22,7 @@ function CardList({hospedagens, reservar, username}) {
               vagas={hospedagem.Reservas}
               username={username}
               screen={0}
+              rate={hospedagem.Rate}
             /> : 
             <div key={hospedagem.id}></div>
           );

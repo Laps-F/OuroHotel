@@ -21,6 +21,7 @@ function App() {
   const [userLogged, setUserLogged] = useState(false);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
+  const [rateArray, setRateArray] = useState([]);
   const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
 
@@ -30,6 +31,7 @@ function App() {
   const localEmail = localStorage.getItem("email");
   const localPassword = localStorage.getItem("password");
   const localName = localStorage.getItem("name");
+  const localRate = JSON.parse(localStorage.getItem("rate"));
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
@@ -46,6 +48,7 @@ function App() {
       setUserLogged(true);
       setPassword(localPassword);
       setName(localName);
+      setRateArray(localRate);
     }
 
     getUsers();
@@ -97,6 +100,7 @@ function App() {
     setCartList(false);
     setName("");
     setPassword("");
+    setRateArray([]);
     localStorage.clear();
   }
 
@@ -104,7 +108,10 @@ function App() {
     users.map((user) => {
       if(user.email === email){
         setName(user.username);
+        setRateArray(user.avalia);
         localStorage.setItem("name", user.username);
+        localStorage.setItem("rate", JSON.stringify(user.avalia));
+        console.log(JSON.stringify(user.avalia));
       }
     })
   }
@@ -115,6 +122,76 @@ function App() {
 
   function handleHome() {
     setCartList(false);
+  }
+
+  async function rateHandle(rating, hotel) {
+    let userId;
+    users.map((user) => {
+      if(user.username === name){
+        userId = user.id;
+      }
+    })
+
+    const userv = await getDoc(doc(DB, 'users', userId));
+    let array = userv._document.data.value.mapValue.fields.avalia;
+    let uservArray = [];
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      if(hotel === array.arrayValue.values[i].mapValue.fields.nome.stringValue){
+        array.arrayValue.values[i].mapValue.fields.rate.integerValue = rating;
+      }
+      const nome = array.arrayValue.values[i].mapValue.fields.nome.stringValue;
+      const rate = parseInt(array.arrayValue.values[i].mapValue.fields.rate.integerValue);
+      uservArray.push({rate, nome})
+    }
+
+    await updateDoc(doc(DB, 'users', userId),{
+      avalia: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'users', userId), {
+        avalia: uservArray
+      }, {merge: true});
+    })
+
+    users.map((user) => {
+      if(user.username === name){
+        setRateArray(uservArray)
+        localStorage.setItem("rate", JSON.stringify(uservArray));
+      }
+    })
+
+    let notaTotal = 0;
+    let contador = 0;
+    for(let i = 0; i < users.length; i++) {
+      for(let j = 0; j < users[i].avalia.length; j++) {
+        if(users[i].avalia[j].nome === hotel && users[i].username === name){
+          notaTotal = notaTotal + rating;
+          contador = contador + 1;
+        }
+        else if(users[i].avalia[j].nome === hotel && users[i].avalia[j].rate > 0){
+          notaTotal = notaTotal + users[i].avalia[j].rate;
+          contador = contador + 1;
+        }
+      }
+    }
+
+    console.log("total", notaTotal)
+    console.log("contador", contador)
+
+    const rate = Math.round(notaTotal / contador);
+    
+    let hospId;
+    hospedagens.map((hospedagem) => {
+      if(hospedagem.Hotel === hotel){
+        hospId = hospedagem.id;
+      }
+    })
+
+    await updateDoc(doc(DB, 'hospedagens', hospId),{
+      Rate: rate
+    }, {merge: true});
+    recarregaPag();
+
+    alert("Hotel Avaliado com Sucesso!");
   }
 
   async function reservaHandle(reserva, date, user) {
@@ -286,7 +363,14 @@ function App() {
         }
       </Modal>
       { cartList ?
-        <CartList hospedagens={hospedagens} user={name} deleteReserva={deleteReserva} editReserva={editReserva}/> :
+        <CartList 
+          hospedagens={hospedagens} 
+          user={name} 
+          deleteReserva={deleteReserva} 
+          editReserva={editReserva} 
+          avalia={rateHandle}
+          rateArray={rateArray}
+        /> :
         <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
       }
       
