@@ -1,8 +1,11 @@
 import React from 'react';
+// AIzaSyBMVYb8OYBVx1Xk16LG3aG2PINkAMD2zIA
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getDoc, setDoc, addDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue, deleteField} from "firebase/firestore";
 import { CartOutline, HomeOutline } from 'react-ionicons'
+
+import { Loader } from "@googlemaps/js-api-loader"
 
 import { DB } from "./constants/Database";
 
@@ -10,6 +13,7 @@ import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
 import './App.css';
+import MapPage from './Pages/MapPage.tsx';
 
 import CardList from './components/CardList';
 import CartList from './components/CartList';
@@ -51,7 +55,7 @@ function App() {
     getUsers();
     getHospedagens();
   }, []);
-
+  
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   }
@@ -268,6 +272,7 @@ function App() {
           }
         </div>
       </header>
+      <MapPage/> 
       <Modal isOpen={openModal}>
         {
           currForm === 'register' ?  
