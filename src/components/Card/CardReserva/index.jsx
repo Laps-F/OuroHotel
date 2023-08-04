@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../Modal';
 import Edit from '../../Edit';
+import Rating from '../../Rating/RatingCart';
 
 import { CreateOutline } from 'react-ionicons'
 
@@ -20,6 +21,8 @@ function CardReserva({
     datas,
     deleteReserva,
     editReserva,
+    avalia,
+    rateArray,
     }){
 
     const [openModal, setOpenModal] = useState(false);
@@ -65,10 +68,9 @@ function CardReserva({
             <div className="image-container">
                 <img src={foto} alt="Foto" width="250" className="imagem"/>
             </div>
-            <div>
+            <div className='edit-container'>
                 <CreateOutline
                     onClick={handleEdit}
-                    className="edit"
                     color={'#000000'} 
                     height="25px"
                     width="25px"
@@ -96,6 +98,10 @@ function CardReserva({
                 >
                     <p className="text">Cancelar Reserva</p>
                 </div>
+                <div className="rating">
+                    <Rating avalia={avalia} hotel={nome} array={rateArray}/>
+                </div>
+
             </div>
             <Modal isOpen={openModal}>
                 <Edit 
