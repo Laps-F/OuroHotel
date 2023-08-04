@@ -152,13 +152,6 @@ function App() {
       }, {merge: true});
     })
 
-    users.map((user) => {
-      if(user.username === name){
-        setRateArray(uservArray)
-        localStorage.setItem("rate", JSON.stringify(uservArray));
-      }
-    })
-
     let notaTotal = 0;
     let contador = 0;
     for(let i = 0; i < users.length; i++) {
@@ -191,6 +184,13 @@ function App() {
     }, {merge: true});
     recarregaPag();
 
+    users.map((user) => {
+      if(user.username === name){
+        setRateArray(uservArray)
+        localStorage.setItem("rate", JSON.stringify(uservArray));
+      }
+    })
+    
     alert("Hotel Avaliado com Sucesso!");
   }
 

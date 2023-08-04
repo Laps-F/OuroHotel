@@ -12,7 +12,8 @@ function Rate({avalia, hotel, array}){
 				setRate(item.rate)
 			}
 		})
-	}, [])
+		console.log("teste")
+	}, [array])
 	return (
 		<Container>
 			{[...Array(5)].map((item, index) => {
