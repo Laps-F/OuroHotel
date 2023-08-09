@@ -14,6 +14,8 @@ import './App.css';
 import CardList from './components/CardList';
 import CartList from './components/CartList';
 
+import Favorite from './components/Favorite';
+
 function App() {
   const [openModal, setOpenModal] = useState(false);
   const [currForm, setCurrentForm] = useState('register');
@@ -24,6 +26,7 @@ function App() {
   const [rateArray, setRateArray] = useState([]);
   const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
+  const [actualFavorite, setActualFavorite] = useState([]);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -32,6 +35,7 @@ function App() {
   const localPassword = localStorage.getItem("password");
   const localName = localStorage.getItem("name");
   const localRate = JSON.parse(localStorage.getItem("rate") || null);
+  const localFav = JSON.parse(localStorage.getItem("favorite") || null);
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
@@ -49,6 +53,7 @@ function App() {
       setPassword(localPassword);
       setName(localName);
       setRateArray(localRate);
+      setActualFavorite(localFav);
     }
 
     getUsers();
@@ -101,7 +106,9 @@ function App() {
     setName("");
     setPassword("");
     setRateArray([]);
+    setActualFavorite([]);
     localStorage.clear();
+    window.location.reload();
   }
 
   function handleName(email) {
@@ -109,8 +116,11 @@ function App() {
       if(user.email === email){
         setName(user.username);
         setRateArray(user.avalia);
+        setActualFavorite(user.favorites);
+        window.location.reload();
         localStorage.setItem("name", user.username);
         localStorage.setItem("rate", JSON.stringify(user.avalia));
+        localStorage.setItem("favorite", JSON.stringify(user.favorites));
       }
     })
   }
@@ -288,11 +298,58 @@ function App() {
     recarregaPag();
   }
 
-  return (
+  async function favoriteHandle(hotelName) {
+    let userId;
+    users.map((user) => {
+      if(user.username === name){
+        userId = user.id;
+      }
+    })
 
+    const userv = await getDoc(doc(DB, 'users', userId));
+    console.log(userv)
+    let array = userv._document.data.value.mapValue.fields.favorites;
+    let uservArray = [];
+    let favoritado = false;
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      const nome = array.arrayValue.values[i].mapValue.fields.nome.stringValue;
+      const fav = Boolean(array.arrayValue.values[i].mapValue.fields.favoritado.booleanValue);
+      if(nome === hotelName){
+        favoritado = !fav;
+      }
+      else{
+        favoritado = fav;
+      }
+      uservArray.push({favoritado, nome})
+    }
+    setActualFavorite(uservArray);
+    // for( let i = 0; i < users.length; i++){
+    //   await setDoc(doc(DB, 'users', users[i].id), {
+    //     favorites: uservArray
+    //   }, {merge: true});
+    // }
+
+    await updateDoc(doc(DB, 'users', userId),{
+      favorites: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'users', userId), {
+        favorites: uservArray
+      }, {merge: true});
+    })
+    recarregaPag();
+
+    users.map((user) => {
+      if(user.username === name){
+        setActualFavorite(uservArray);
+        localStorage.setItem("favorite", JSON.stringify(uservArray));
+      }
+    })
+
+  }
+  
+  return (
     <div className="App">
       <header className="App-header">
-
         <div className="header-container">
           <div className="logo-container">
             <img src={require("./constants/images/Logo.jpeg")} alt="Logo" width="100" className="logo"/>
@@ -300,6 +357,7 @@ function App() {
           {
             userLogged ? 
             <div className='logged-container'>
+              {/* {preencherUsers()} */}
               { !cartList ? 
                 <div className="titulo-container">
                   <p className='titulo'>Home</p>
@@ -368,11 +426,11 @@ function App() {
           avalia={rateHandle}
           rateArray={rateArray}
         /> :
-        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
-      }
-      
+        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name} favorites={favoriteHandle} actFavorited={actualFavorite}
+        recarrega={recarregaPag}/>
+      }  
     </div>
-  );
-}
+  )
+};
 
 export default App;

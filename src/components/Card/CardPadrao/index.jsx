@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from '../../Modal';
 import Confirmation from '../../Confirmation';
 import Rating  from '../../Rating/RatingHome';
+import Favorite from '../../Favorite';
 
 import './style.css'
 
@@ -19,6 +20,9 @@ function CardPadrao({
     username,
     datas,
     rate,
+    favorites,
+    actFavorited,
+    recarrega,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -38,6 +42,8 @@ function CardPadrao({
     useEffect(() => {
         formatData();
     }, [datas]);
+
+
 
     function formatData(){
         var newDate = [];
@@ -106,6 +112,9 @@ function CardPadrao({
                 </div>
                 <div className="rating">
                     <Rating hotel={nome} rating={rate}/>
+                </div>
+                <div className='fav-button'>
+                    <Favorite favorites={favorites} hotelName={nome} actFavorited={actFavorited} recarrega={recarrega}></Favorite>
                 </div>
             </div>
             <Modal isOpen={openModal}>

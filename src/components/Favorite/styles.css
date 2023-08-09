@@ -1,0 +1,30 @@
+/* Estilos gerais para o botão */
+.favorito-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+  }
+  
+  /* Estilos para o ícone do coração */
+  .heart-icon {
+    font-size: 24px;
+    margin-right: 6px;
+  }
+  
+  /* Estilos para o botão favoritado */
+  .favoritado .heart-icon {
+    color: red; /* Ou a cor que você desejar */
+  }
+  
+  /* Estilos adicionais para melhorar a acessibilidade e interação */
+  .favorito-button:focus {
+    outline: none;
+  }
+  
+  .favorito-button:hover {
+    opacity: 0.8;
+  }
+  

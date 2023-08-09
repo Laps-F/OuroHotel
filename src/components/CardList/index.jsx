@@ -1,8 +1,9 @@
 import Card from "../Card";
+import Favorite from "../Favorite";
 
 import './style.css';
 
-function CardList({hospedagens, reservar, username}) {
+function CardList({hospedagens, reservar, username, favorites, actFavorited, recarrega}) {
     return (
       <div className="list">
         {hospedagens.map((hospedagem) => {
@@ -23,6 +24,9 @@ function CardList({hospedagens, reservar, username}) {
               username={username}
               screen={0}
               rate={hospedagem.Rate}
+              favorites={favorites}
+              actFavorited={actFavorited}
+              recarrega={recarrega}
             /> : 
             <div key={hospedagem.id}></div>
           );

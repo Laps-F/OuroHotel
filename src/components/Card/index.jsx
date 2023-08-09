@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React , {useEffect} from 'react';
 
 import CardPadrao from './CardPadrao';
 import CardReserva from './CardReserva';
@@ -22,6 +22,9 @@ function Card({
     rate,
     avalia,
     rateArray,
+    favorites,
+    actFavorited,
+    recarrega,
     }){
 
     return (
@@ -39,6 +42,9 @@ function Card({
             vagas={vagas}
             username={username}
             rate={rate}
+            favorites={favorites}
+            actFavorited={actFavorited}
+            recarrega={recarrega}
         /> :
         <CardReserva 
             id={id}
