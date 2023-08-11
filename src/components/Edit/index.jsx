@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TextField from '@mui/material/TextField';
@@ -9,6 +10,7 @@ import './style.css';
 const Edit = ({datadb, edit, id, closeModal, username, nome, vagas, preco, qtdcamas, tipocama}) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [errorDate, setErrorDate] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -16,14 +18,17 @@ const Edit = ({datadb, edit, id, closeModal, username, nome, vagas, preco, qtdca
     };
       
     async function editReserva () {
+        setIsLoading(true);
+
         if(selectedDate) {
             await edit(id, selectedDate, datadb, username);
-            alert("Reserva Editada com Sucesso!");
             closeModal();
         }
         else {
             setErrorDate(true);
         }
+
+        setIsLoading(false);
     };
   return (
     <div className='global_confirm'>
@@ -48,7 +53,7 @@ const Edit = ({datadb, edit, id, closeModal, username, nome, vagas, preco, qtdca
         <button className='confirmation_button'
             onClick={editReserva}
         >
-            Confirmar
+            {isLoading? <FaSpinner className="spinner_edit" />: 'Confirmar'}
         </button>
         <button className='cancel_button'
             onClick={closeModal}

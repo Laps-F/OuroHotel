@@ -1,5 +1,4 @@
 import Card from "../Card";
-import Favorite from "../Favorite";
 
 import './style.css';
 

@@ -6,9 +6,7 @@ const Favorite = ({favorites, hotelName, actFavorited, recarrega}) => {
   const [favoritado, setFavoritado] = useState(false);
 
   useEffect(() => {
-    console.log(actFavorited);
     actFavorited.map((fav)=> {
-      console.log(fav);
       if (fav.nome === hotelName){
         setFavoritado(fav.favoritado);
       }

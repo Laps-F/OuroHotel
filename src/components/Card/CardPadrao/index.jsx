@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+
 import Modal from '../../Modal';
 import Confirmation from '../../Confirmation';
 import Rating  from '../../Rating/RatingHome';
@@ -42,8 +43,6 @@ function CardPadrao({
     useEffect(() => {
         formatData();
     }, [datas]);
-
-
 
     function formatData(){
         var newDate = [];
@@ -113,7 +112,7 @@ function CardPadrao({
                 <div className="rating">
                     <Rating hotel={nome} rating={rate}/>
                 </div>
-                <div className='fav-button'>
+                <div className='fav-button fav-container'>
                     <Favorite favorites={favorites} hotelName={nome} actFavorited={actFavorited} recarrega={recarrega}></Favorite>
                 </div>
             </div>

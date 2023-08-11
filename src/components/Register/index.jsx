@@ -74,7 +74,7 @@ const Register = (props) => {
 
   let favorites = []
   props.hospedagens.map((hosp) => {
-    favorites.push({hosp, fav: false})
+    favorites.push({nome: hosp.Hotel, favoritado: false})
   })
 
   async function createUser() {
