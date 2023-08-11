@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getDoc, setDoc, addDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue, deleteField} from "firebase/firestore";
-import { CartOutline, HomeOutline } from 'react-ionicons'
+import { CartOutline, HomeOutline, HeartOutline } from 'react-ionicons'
 
 import { DB } from "./constants/Database";
 
@@ -13,8 +13,7 @@ import './App.css';
 
 import CardList from './components/CardList';
 import CartList from './components/CartList';
-
-import Favorite from './components/Favorite';
+import FavoriteList from './components/FavoriteList';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -26,7 +25,12 @@ function App() {
   const [rateArray, setRateArray] = useState([]);
   const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
+  const [favoriteList, setFavoriteList] = useState(false);
   const [actualFavorite, setActualFavorite] = useState([]);
+  const [alertConfirm, setAlertConfirm] = useState(false);
+  const [alertCancel, setAlertCancel] = useState(false);
+  const [alertEdit, setAlertEdit] = useState(false);
+  const [alertRate, setAlertRate] = useState(false);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -36,6 +40,7 @@ function App() {
   const localName = localStorage.getItem("name");
   const localRate = JSON.parse(localStorage.getItem("rate") || null);
   const localFav = JSON.parse(localStorage.getItem("favorite") || null);
+  
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
@@ -129,8 +134,16 @@ function App() {
     setCartList(true);
   }
 
-  function handleHome() {
+  function handleFavoriteList() {
+    setFavoriteList(true);
+  }
+
+  function handleHomeCart() {
     setCartList(false);
+  }
+
+  function handleHomeFav() {
+    setFavoriteList(false);
   }
 
   async function rateHandle(rating, hotel) {
@@ -197,7 +210,10 @@ function App() {
       }
     })
 
-    alert("Hotel Avaliado com Sucesso!");
+    setAlertRate(true);
+    setTimeout(() => {
+      setAlertRate(false);
+    }, 3000);
   }
 
   async function reservaHandle(reserva, date, user) {
@@ -230,6 +246,10 @@ function App() {
       }, {merge: true});
     })
     recarregaPag();
+    setAlertConfirm(true);
+    setTimeout(() => {
+      setAlertConfirm(false);
+    }, 3000);
   }
 
   async function deleteReserva(reserva, date) {
@@ -260,6 +280,10 @@ function App() {
     });
 
     recarregaPag();
+    setAlertCancel(true); 
+    setTimeout(() => {
+      setAlertCancel(false);
+    }, 3000);
   }
 
   async function editReserva(reserva, Newdate, oldDate, user){
@@ -296,6 +320,10 @@ function App() {
       }, {merge: true});
     })
     recarregaPag();
+    setAlertEdit(true); 
+    setTimeout(() => {
+      setAlertEdit(false);
+    }, 3000);
   }
 
   async function favoriteHandle(hotelName) {
@@ -357,8 +385,7 @@ function App() {
           {
             userLogged ? 
             <div className='logged-container'>
-              {/* {preencherUsers()} */}
-              { !cartList ? 
+              { !cartList && !favoriteList? 
                 <div className="titulo-container">
                   <p className='titulo'>Home</p>
                   <button onClick={handleCart} className="cart-outline">
@@ -368,16 +395,52 @@ function App() {
                       width="40px"
                     />
                   </button>
+                  <button onClick={handleFavoriteList} className="cart-outline">
+                    <HeartOutline
+                      color={'#225,225,225'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
                 </div> :
+                cartList ?
                 <div className='titulo-container'>
                   <p className='titulo'>Carrinho</p>
-                  <button onClick={handleHome} className="cart-outline">
+                  <button onClick={handleHomeCart} className="cart-outline">
                     <HomeOutline
                       color={'#225,225,225'} 
                       height="40px"
                       width="40px"
                     />
                   </button>
+                </div> :
+                favoriteList ?
+                <div className='titulo-container'>
+                  <p className='titulo'>Favoritos</p>
+                  <button onClick={handleHomeFav} className="cart-outline">
+                    <HomeOutline
+                      color={'#225,225,225'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
+                </div> :
+                <div className="titulo-container">
+                <p className='titulo'>Home</p>
+                <button onClick={handleCart} className="cart-outline">
+                  <CartOutline
+                    color={'#225,225,225'} 
+                    height="40px"
+                    width="40px"
+                  />
+                </button>
+                <button onClick={handleFavoriteList} className="cart-outline">
+                  <HeartOutline
+                    color={'#225,225,225'} 
+                    height="40px"
+                    width="40px"
+                  />
+                </button>
                 </div>
               }
               
@@ -426,9 +489,30 @@ function App() {
           avalia={rateHandle}
           rateArray={rateArray}
         /> :
-        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name} favorites={favoriteHandle} actFavorited={actualFavorite}
-        recarrega={recarregaPag}/>
+        favoriteList ? 
+        <FavoriteList 
+          hospedagens={hospedagens} 
+          reservar={reservaHandle} 
+          username={name} 
+          favorites={favoriteHandle} 
+          actFavorited={actualFavorite}
+          recarrega={recarregaPag}
+        />
+        :
+        <CardList 
+          hospedagens={hospedagens} 
+          reservar={reservaHandle} 
+          username={name} 
+          favorites={favoriteHandle} 
+          actFavorited={actualFavorite}
+          recarrega={recarregaPag}
+        />
       }  
+      {alertConfirm && <div className="alert">Reserva Confirmada com Sucesso!</div>}
+      {alertCancel && <div className="alert">Reserva Cancelada com Sucesso!</div>}
+      {alertEdit && <div className="alert">Reserva Editada com Sucesso!</div>}
+      {alertRate && <div className="alert">Hotel Avaliado com Sucesso!</div>}
+
     </div>
   )
 };
