@@ -1,0 +1,15 @@
+.map{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px transparent #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 86vh;
+    width: 100%;
+}
+
+.custom-info-window{
+    min-height: 40px;
+    top: -50px;
+}

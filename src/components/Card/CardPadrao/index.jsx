@@ -8,6 +8,12 @@ import Favorite from '../../Favorite';
 
 import './style.css'
 
+const OPTIONAL = {
+    position : 'fixed',
+    top : '50%',
+    left : '75%',
+};
+
 function CardPadrao({
     id,
     nome, 
@@ -116,7 +122,7 @@ function CardPadrao({
                     <Favorite favorites={favorites} hotelName={nome} actFavorited={actFavorited} recarrega={recarrega}></Favorite>
                 </div>
             </div>
-            <Modal isOpen={openModal}>
+            <Modal isOpen={openModal} OPTIONAL={OPTIONAL}>
                 <Confirmation 
                     datadb={fDatas} 
                     reserva={reservar} 

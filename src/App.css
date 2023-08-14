@@ -1,5 +1,6 @@
 .App {
   background-image: url(./constants/images/op-image.jpg);
+  z-index: -1000;
   text-align: center;
   background-repeat: no-repeat;
   text-align: center;
@@ -168,4 +169,11 @@ a {
   border-radius: 4px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1;
+}
+
+.map-container {
+  /* display: flex; */
+  z-index: 0;
+  width: 47%;
+  position: relative;
 }

@@ -1,4 +1,4 @@
-.list {
+.card-list {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -6,7 +6,7 @@
     max-height: 90%;
     overflow-y: scroll;
     position: fixed;
-    left: 0;
+    left: 25%;
 }
 
 .list::-webkit-scrollbar {
