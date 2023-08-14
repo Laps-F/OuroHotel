@@ -33,6 +33,7 @@ function App() {
   const [alertCancel, setAlertCancel] = useState(false);
   const [alertEdit, setAlertEdit] = useState(false);
   const [alertRate, setAlertRate] = useState(false);
+  const [coords, setCoords] = useState([]);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -47,6 +48,7 @@ function App() {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
       console.log(data);
+      handleCoords(data);
       setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
     const getUsers = async () => {
@@ -116,6 +118,18 @@ function App() {
     setActualFavorite([]);
     localStorage.clear();
     window.location.reload();
+  }
+
+  function handleCoords(data) {
+    let lat, lng, txt;
+    let array = []
+    data.docs.map((dt) => {
+      lat = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.latitude;
+      lng = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.longitude;
+      txt = dt._document.data.value.mapValue.fields.Hotel.stringValue;
+      array.push({lat, lng, txt});
+    });
+    setCoords(array);
   }
 
   function handleName(email) {
