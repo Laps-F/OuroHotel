@@ -1,10 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+
 import Modal from '../../Modal';
 import Confirmation from '../../Confirmation';
 import Rating  from '../../Rating/RatingHome';
+import Favorite from '../../Favorite';
 
 import './style.css'
+
+const OPTIONAL = {
+    position : 'fixed',
+    top : '50%',
+    left : '75%',
+};
 
 function CardPadrao({
     id,
@@ -19,6 +27,9 @@ function CardPadrao({
     username,
     datas,
     rate,
+    favorites,
+    actFavorited,
+    recarrega,
     }){
 
     const [disabled, setDisabled] = useState(false);
@@ -107,8 +118,11 @@ function CardPadrao({
                 <div className="rating">
                     <Rating hotel={nome} rating={rate}/>
                 </div>
+                <div className='fav-button fav-container'>
+                    <Favorite favorites={favorites} hotelName={nome} actFavorited={actFavorited} recarrega={recarrega}></Favorite>
+                </div>
             </div>
-            <Modal isOpen={openModal}>
+            <Modal isOpen={openModal} OPTIONAL={OPTIONAL}>
                 <Confirmation 
                     datadb={fDatas} 
                     reserva={reservar} 

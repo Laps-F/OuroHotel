@@ -74,3 +74,14 @@
     border: 10px;
     border-radius: 10px;
 }
+
+.spinner_edit {
+    animation: spin 1s linear infinite;
+    width: 57px;
+    height: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

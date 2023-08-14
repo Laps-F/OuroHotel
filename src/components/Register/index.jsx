@@ -72,12 +72,18 @@ const Register = (props) => {
     avalia.push({rate: 0, nome: hosp.Hotel})
   })
 
+  let favorites = []
+  props.hospedagens.map((hosp) => {
+    favorites.push({nome: hosp.Hotel, favoritado: false})
+  })
+
   async function createUser() {
     await addDoc(usersCollection, {
       email,
       username,
       password,
       avalia,
+      favorites
     });
   }
 
