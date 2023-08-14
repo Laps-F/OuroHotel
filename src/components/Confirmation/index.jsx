@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TextField from '@mui/material/TextField';
+
 import './styles.css';
 
 
-const Confirmation = ({datadb, reserva, id, closeModal, username, nome, endereco, preco, qtdcamas, tipocama}) => {
+const Confirmation = ({datadb, reserva, id, closeModal, username, nome, preco, qtdcamas, tipocama}) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [errorDate, setErrorDate] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -15,14 +18,17 @@ const Confirmation = ({datadb, reserva, id, closeModal, username, nome, endereco
     };
       
     async function confirmReserva () {
+        setIsLoading(true);
+
         if(selectedDate) {
             await reserva(id, selectedDate, username);
-            alert("Reserva feita!");
             closeModal();
         }
         else {
             setErrorDate(true);
         }
+
+        setIsLoading(false);
     };
   return (
     <div className='global_confirm'>
@@ -47,7 +53,7 @@ const Confirmation = ({datadb, reserva, id, closeModal, username, nome, endereco
         <button className='confirmation_button'
             onClick={confirmReserva}
         >
-            Confirmar
+            {isLoading? <FaSpinner className="spinner_confirm" />: 'Confirmar'}
         </button>
         <button className='cancel_button'
             onClick={closeModal}

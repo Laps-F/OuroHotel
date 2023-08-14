@@ -5,6 +5,7 @@ import Edit from '../../Edit';
 import Rating from '../../Rating/RatingCart';
 
 import { CreateOutline } from 'react-ionicons'
+import { FaSpinner } from 'react-icons/fa';
 
 import './style.css'
 
@@ -28,6 +29,7 @@ function CardReserva({
     const [openModal, setOpenModal] = useState(false);
     const [fDatas, setfDatas] = useState();
     const [fVagas, setfVagas] = useState([]);
+    const [isLoading, setisLoading] = useState(false);
 
     useEffect(() => {
         formatData();
@@ -36,7 +38,6 @@ function CardReserva({
     function formatData(){
         const fdata = `${datas.toDate().getDate()}/${datas.toDate().getMonth() + 1}/${datas.toDate().getFullYear()}`;
         setfDatas(fdata);
-
     }
 
     function closeModal() {
@@ -44,11 +45,16 @@ function CardReserva({
     }    
 
     const handleButton = () => {
+        setisLoading(true);
+
         if(fDatas.length === 0 || username===""){
             return;
         }
         deleteReserva(id, fDatas, username);
-        alert("Reserva Cancelada!");  
+        
+        setTimeout(() => {
+            setisLoading(false);
+        }, 5000); 
     }
 
     function handleEdit() {
@@ -96,7 +102,8 @@ function CardReserva({
                     onClick={handleButton} 
                     style={{backgroundColor: "#e70d0d"}}
                 >
-                    <p className="text">Cancelar Reserva</p>
+                    {isLoading ? <FaSpinner className="spinner" /> : <p className="text">Cancelar Reserva</p>}
+                    
                 </div>
                 <div className="rating">
                     <Rating avalia={avalia} hotel={nome} array={rateArray}/>

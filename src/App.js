@@ -2,17 +2,20 @@ import React from 'react';
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getDoc, setDoc, addDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue, deleteField} from "firebase/firestore";
-import { CartOutline, HomeOutline } from 'react-ionicons'
+import { CartOutline, HomeOutline, HeartOutline } from 'react-ionicons'
 
 import { DB } from "./constants/Database";
 
 import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
+import MapPage from './Pages/MapPage.tsx';
+
 import './App.css';
 
 import CardList from './components/CardList';
 import CartList from './components/CartList';
+import FavoriteList from './components/FavoriteList';
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -24,6 +27,13 @@ function App() {
   const [rateArray, setRateArray] = useState([]);
   const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
+  const [favoriteList, setFavoriteList] = useState(false);
+  const [actualFavorite, setActualFavorite] = useState([]);
+  const [alertConfirm, setAlertConfirm] = useState(false);
+  const [alertCancel, setAlertCancel] = useState(false);
+  const [alertEdit, setAlertEdit] = useState(false);
+  const [alertRate, setAlertRate] = useState(false);
+  const [coords, setCoords] = useState([]);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -32,10 +42,13 @@ function App() {
   const localPassword = localStorage.getItem("password");
   const localName = localStorage.getItem("name");
   const localRate = JSON.parse(localStorage.getItem("rate") || null);
+  const localFav = JSON.parse(localStorage.getItem("favorite") || null);
+  
   useEffect(() => {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
       console.log(data);
+      handleCoords(data);
       setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
     const getUsers = async () => {
@@ -49,6 +62,7 @@ function App() {
       setPassword(localPassword);
       setName(localName);
       setRateArray(localRate);
+      setActualFavorite(localFav);
     }
 
     getUsers();
@@ -101,7 +115,21 @@ function App() {
     setName("");
     setPassword("");
     setRateArray([]);
+    setActualFavorite([]);
     localStorage.clear();
+    window.location.reload();
+  }
+
+  function handleCoords(data) {
+    let lat, lng, txt;
+    let array = []
+    data.docs.map((dt) => {
+      lat = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.latitude;
+      lng = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.longitude;
+      txt = dt._document.data.value.mapValue.fields.Hotel.stringValue;
+      array.push({lat, lng, txt});
+    });
+    setCoords(array);
   }
 
   function handleName(email) {
@@ -109,8 +137,11 @@ function App() {
       if(user.email === email){
         setName(user.username);
         setRateArray(user.avalia);
+        setActualFavorite(user.favorites);
+        window.location.reload();
         localStorage.setItem("name", user.username);
         localStorage.setItem("rate", JSON.stringify(user.avalia));
+        localStorage.setItem("favorite", JSON.stringify(user.favorites));
       }
     })
   }
@@ -119,8 +150,16 @@ function App() {
     setCartList(true);
   }
 
-  function handleHome() {
+  function handleFavoriteList() {
+    setFavoriteList(true);
+  }
+
+  function handleHomeCart() {
     setCartList(false);
+  }
+
+  function handleHomeFav() {
+    setFavoriteList(false);
   }
 
   async function rateHandle(rating, hotel) {
@@ -187,7 +226,10 @@ function App() {
       }
     })
 
-    alert("Hotel Avaliado com Sucesso!");
+    setAlertRate(true);
+    setTimeout(() => {
+      setAlertRate(false);
+    }, 3000);
   }
 
   async function reservaHandle(reserva, date, user) {
@@ -220,6 +262,10 @@ function App() {
       }, {merge: true});
     })
     recarregaPag();
+    setAlertConfirm(true);
+    setTimeout(() => {
+      setAlertConfirm(false);
+    }, 3000);
   }
 
   async function deleteReserva(reserva, date) {
@@ -250,6 +296,10 @@ function App() {
     });
 
     recarregaPag();
+    setAlertCancel(true); 
+    setTimeout(() => {
+      setAlertCancel(false);
+    }, 3000);
   }
 
   async function editReserva(reserva, Newdate, oldDate, user){
@@ -286,13 +336,64 @@ function App() {
       }, {merge: true});
     })
     recarregaPag();
+    setAlertEdit(true); 
+    setTimeout(() => {
+      setAlertEdit(false);
+    }, 3000);
   }
 
-  return (
+  async function favoriteHandle(hotelName) {
+    let userId;
+    users.map((user) => {
+      if(user.username === name){
+        userId = user.id;
+      }
+    })
 
+    const userv = await getDoc(doc(DB, 'users', userId));
+    console.log(userv)
+    let array = userv._document.data.value.mapValue.fields.favorites;
+    let uservArray = [];
+    let favoritado = false;
+    for(let i = 0; i < array.arrayValue.values.length; i++){
+      const nome = array.arrayValue.values[i].mapValue.fields.nome.stringValue;
+      const fav = Boolean(array.arrayValue.values[i].mapValue.fields.favoritado.booleanValue);
+      if(nome === hotelName){
+        favoritado = !fav;
+      }
+      else{
+        favoritado = fav;
+      }
+      uservArray.push({favoritado, nome})
+    }
+    setActualFavorite(uservArray);
+    // for( let i = 0; i < users.length; i++){
+    //   await setDoc(doc(DB, 'users', users[i].id), {
+    //     favorites: uservArray
+    //   }, {merge: true});
+    // }
+
+    await updateDoc(doc(DB, 'users', userId),{
+      favorites: deleteField()
+    }).then(async () => {
+      await setDoc(doc(DB, 'users', userId), {
+        favorites: uservArray
+      }, {merge: true});
+    })
+    recarregaPag();
+
+    users.map((user) => {
+      if(user.username === name){
+        setActualFavorite(uservArray);
+        localStorage.setItem("favorite", JSON.stringify(uservArray));
+      }
+    })
+
+  }
+  
+  return (
     <div className="App">
       <header className="App-header">
-
         <div className="header-container">
           <div className="logo-container">
             <img src={require("./constants/images/Logo.jpeg")} alt="Logo" width="100" className="logo"/>
@@ -300,7 +401,7 @@ function App() {
           {
             userLogged ? 
             <div className='logged-container'>
-              { !cartList ? 
+              { !cartList && !favoriteList? 
                 <div className="titulo-container">
                   <p className='titulo'>Home</p>
                   <button onClick={handleCart} className="cart-outline">
@@ -310,16 +411,52 @@ function App() {
                       width="40px"
                     />
                   </button>
+                  <button onClick={handleFavoriteList} className="cart-outline">
+                    <HeartOutline
+                      color={'#225,225,225'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
                 </div> :
+                cartList ?
                 <div className='titulo-container'>
                   <p className='titulo'>Carrinho</p>
-                  <button onClick={handleHome} className="cart-outline">
+                  <button onClick={handleHomeCart} className="cart-outline">
                     <HomeOutline
                       color={'#225,225,225'} 
                       height="40px"
                       width="40px"
                     />
                   </button>
+                </div> :
+                favoriteList ?
+                <div className='titulo-container'>
+                  <p className='titulo'>Favoritos</p>
+                  <button onClick={handleHomeFav} className="cart-outline">
+                    <HomeOutline
+                      color={'#225,225,225'} 
+                      height="40px"
+                      width="40px"
+                    />
+                  </button>
+                </div> :
+                <div className="titulo-container">
+                <p className='titulo'>Home</p>
+                <button onClick={handleCart} className="cart-outline">
+                  <CartOutline
+                    color={'#225,225,225'} 
+                    height="40px"
+                    width="40px"
+                  />
+                </button>
+                <button onClick={handleFavoriteList} className="cart-outline">
+                  <HeartOutline
+                    color={'#225,225,225'} 
+                    height="40px"
+                    width="40px"
+                  />
+                </button>
                 </div>
               }
               
@@ -368,11 +505,39 @@ function App() {
           avalia={rateHandle}
           rateArray={rateArray}
         /> :
-        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
-      }
-      
+        favoriteList ? 
+        <FavoriteList 
+          hospedagens={hospedagens} 
+          reservar={reservaHandle} 
+          username={name} 
+          favorites={favoriteHandle} 
+          actFavorited={actualFavorite}
+          recarrega={recarregaPag}
+        />
+        :
+        <div>
+          <div>
+          <CardList 
+            hospedagens={hospedagens} 
+            reservar={reservaHandle} 
+            username={name} 
+            favorites={favoriteHandle} 
+            actFavorited={actualFavorite}
+            recarrega={recarregaPag}
+          />
+          </div>
+          <div className='map-container'>
+            <MapPage coords={coords} hospedagens={hospedagens} /> 
+          </div>  
+        </div>
+      }  
+      {alertConfirm && <div className="alert">Reserva Confirmada com Sucesso!</div>}
+      {alertCancel && <div className="alert">Reserva Cancelada com Sucesso!</div>}
+      {alertEdit && <div className="alert">Reserva Editada com Sucesso!</div>}
+      {alertRate && <div className="alert">Hotel Avaliado com Sucesso!</div>}
+
     </div>
-  );
-}
+  )
+};
 
 export default App;
