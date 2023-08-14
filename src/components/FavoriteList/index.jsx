@@ -8,7 +8,7 @@ function FavoriteList({hospedagens, reservar, username, favorites, actFavorited,
         <div className="list">
             {hospedagens.map((hospedagem) => {
                 return (
-                    actFavorited.map((fav) => {
+                    actFavorited && actFavorited.map((fav) => {
                         return (
                             fav.nome === hospedagem.Hotel && fav.favoritado === true ?
                             <Card 
