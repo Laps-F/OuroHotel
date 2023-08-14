@@ -28,6 +28,7 @@ function App() {
   const [rateArray, setRateArray] = useState([]);
   const [password, setPassword] = useState("");
   const [cartList, setCartList] = useState(false);
+  const [coords, setCoords] = useState([]);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -40,6 +41,7 @@ function App() {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
       console.log(data);
+      handleCoords(data);
       setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
     const getUsers = async () => {
@@ -89,6 +91,18 @@ function App() {
     setOpenModal(!openModal);
     if(currForm === 'register')
       setCurrentForm('login');
+  }
+
+  function handleCoords(data) {
+    let lat, lng, txt;
+    let array = []
+    data.docs.map((dt) => {
+      lat = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.latitude;
+      lng = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.longitude;
+      txt = dt._document.data.value.mapValue.fields.Hotel.stringValue;
+      array.push({lat, lng, txt});
+    });
+    setCoords(array);
   }
 
   function loginHandler(email, pass) {
@@ -345,7 +359,6 @@ function App() {
           }
         </div>
       </header>
-      <MapPage/> 
       <Modal isOpen={openModal}>
         {
           currForm === 'register' ?  
@@ -373,7 +386,14 @@ function App() {
           avalia={rateHandle}
           rateArray={rateArray}
         /> :
-        <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
+        <div>
+          <div>
+            <CardList hospedagens={hospedagens} reservar={reservaHandle} username={name}/>
+          </div>
+          <div className='map-container'>
+            <MapPage coords={coords} hospedagens={hospedagens} /> 
+          </div>  
+        </div>
       }
       
     </div>

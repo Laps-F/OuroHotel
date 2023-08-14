@@ -2,11 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px;
+    border: 1px transparent #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 40vh;
+    height: 86vh;
+    width: 100%;
 }
 
 .custom-info-window{

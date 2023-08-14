@@ -4,7 +4,7 @@ import './style.css';
 
 function CardList({hospedagens, reservar, username}) {
     return (
-      <div className="list">
+      <div className="card-list">
         {hospedagens.map((hospedagem) => {
           return(
             hospedagem.Reservas.some(reserv => reserv.reservado === false) ? 

@@ -6,6 +6,12 @@ import Rating  from '../../Rating/RatingHome';
 
 import './style.css'
 
+const OPTIONAL = {
+    position : 'fixed',
+    top : '50%',
+    left : '75%',
+};
+
 function CardPadrao({
     id,
     nome, 
@@ -108,7 +114,7 @@ function CardPadrao({
                     <Rating hotel={nome} rating={rate}/>
                 </div>
             </div>
-            <Modal isOpen={openModal}>
+            <Modal isOpen={openModal} OPTIONAL={OPTIONAL}>
                 <Confirmation 
                     datadb={fDatas} 
                     reserva={reservar} 

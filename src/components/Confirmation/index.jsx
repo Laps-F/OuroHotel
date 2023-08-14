@@ -4,7 +4,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import TextField from '@mui/material/TextField';
 import './styles.css';
 
-
 const Confirmation = ({datadb, reserva, id, closeModal, username, nome, endereco, preco, qtdcamas, tipocama}) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [errorDate, setErrorDate] = useState(false);

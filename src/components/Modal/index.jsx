@@ -22,12 +22,12 @@ const MODAL_STYLE = {
     color : 'black',
 }
 
-export default function Modal({isOpen, children}) {
+export default function Modal({isOpen, children, OPTIONAL={}}) {
 
     if(isOpen) {
         return (
             <div style={BACKGROUND_STYLE}>
-                <div style={MODAL_STYLE}>
+                <div style={{...MODAL_STYLE, ...OPTIONAL}}>
                     <div>
                         {children}
                     </div>

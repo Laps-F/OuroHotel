@@ -1,10 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow} from '@react-google-maps/api';
+
+import Modal from '../components/Modal';
+import Details from '../components/Details';
 import './MapPage.css';
 
+const OPTIONAL = {
+    position : 'fixed',
+    top : '50%',
+    left : '25%',
+};
 
-const MapPage = () => {
+
+const MapPage = ({coords, hospedagens }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyBMVYb8OYBVx1Xk16LG3aG2PINkAMD2zIA"
@@ -15,9 +24,12 @@ const MapPage = () => {
     const [showCard, setShowCard] = useState(false);
 
     const handleMarkerClick = (marker) => {
-        setRenderHotel(marker);
+        hospedagens.map((item) => {
+            if(marker.txt === item.Hotel){
+                setRenderHotel(item);
+            }
+        })
         setShowCard(true); 
-        alert('Clicou!')
     };
 
     const handleInfoWindowClose = () => {
@@ -25,32 +37,11 @@ const MapPage = () => {
         setShowCard(false); 
     };
 
-    const SolarDoRosario = {
-        lat: -20.383660626169146, 
-        lng: -43.50942981876866,
-        text: "Solar do Rosário"
-      }
-    
-    const GrandeHotel = {
-        lat: -20.384226083530727, 
-        lng: -43.50538888894446,
-        text: "Grande Hotel de Ouro Preto"
-      } 
-    const SolarDaOpera = {
-        lat: -20.385261656892418, 
-        lng: -43.50458006196328,
-        text: "Solar da Ópera"
-      } 
-    const BoroniPalace = {
-        lat: -20.380175836474898, 
-        lng: -43.507045288944454,
-        text: "Boroni Palace"
-      } 
-    const ArcadiaMineira = {
-        lat: -20.38833327388613,
-        lng: -43.50289007545368,
-        text: "Arcadia Mineira"
-      } 
+    function closeModal() {
+        setShowCard(false);
+    }    
+
+
     return <div className="map">
         {
             isLoaded ? (
@@ -63,36 +54,36 @@ const MapPage = () => {
                   }}
                   zoom={15}
                 >
-                    <Marker position={{lat: SolarDoRosario.lat, lng: SolarDoRosario.lng}} onMouseOver={(e) => {setSelectedMarker(SolarDoRosario)}}
-                    onClick={(e) => handleMarkerClick(SolarDoRosario)}
-                    />
-                    <Marker position={{lat: GrandeHotel.lat, lng: GrandeHotel.lng}} onMouseOver={(e) => {setSelectedMarker(GrandeHotel)}}
-                    onClick={(e) => handleMarkerClick(GrandeHotel)}
-                    />
-                    <Marker position={{lat: SolarDaOpera.lat, lng: SolarDaOpera.lng}} onMouseOver={(e) => {setSelectedMarker(SolarDaOpera)}}
-                    onClick={(e) => handleMarkerClick(SolarDaOpera)}
-                    />
-                    <Marker position={{lat: BoroniPalace.lat, lng: BoroniPalace.lng}} onMouseOver={(e) => {setSelectedMarker(BoroniPalace)}}
-                    onClick={(e) => handleMarkerClick(BoroniPalace)}
-                    />
-                    <Marker position={{lat: ArcadiaMineira.lat, lng: ArcadiaMineira.lng}} onMouseOver={(e) => {setSelectedMarker(ArcadiaMineira)}}
-                    onClick={(e) => handleMarkerClick(ArcadiaMineira)}
-                    />
+                    {coords.map((place) => {
+                        return (
+                            <Marker key={place.txt} position={{lat: place.lat.doubleValue, lng: place.lng.doubleValue}} onMouseOver={(e) => {setSelectedMarker(place)}}
+                            onClick={(e) => handleMarkerClick(place)}/>
+                        )
+                    })}
                     {selectedMarker && (
                         <InfoWindow
-                            position={selectedMarker}
+                            position={{lat: selectedMarker.lat.doubleValue, lng: selectedMarker.lng.doubleValue}}
                             onCloseClick={() => setSelectedMarker(null)}
                             options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
                             class-name="custom-info-window"
                         >
                             <div>
-                                <h3 style={{ fontWeight: 'bold' }}>{selectedMarker.text}</h3>
+                                <h3 style={{ fontWeight: 'bold' }}>{selectedMarker.txt}</h3>
                             </div>
                         </InfoWindow>
                     )}
                 </GoogleMap>
                 </>
             ) : <></>
+        }
+        {showCard ? 
+            <Modal isOpen={showCard} OPTIONAL={OPTIONAL}>
+                <Details
+                    closeModal={closeModal}
+                    hotel={renderHotel}
+                />
+            </Modal> : 
+            <div></div>
         }
     </div>;
 }
