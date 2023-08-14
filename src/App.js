@@ -9,6 +9,8 @@ import { DB } from "./constants/Database";
 import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
+import MapPage from './Pages/MapPage.tsx';
+
 import './App.css';
 
 import CardList from './components/CardList';
@@ -499,14 +501,21 @@ function App() {
           recarrega={recarregaPag}
         />
         :
-        <CardList 
-          hospedagens={hospedagens} 
-          reservar={reservaHandle} 
-          username={name} 
-          favorites={favoriteHandle} 
-          actFavorited={actualFavorite}
-          recarrega={recarregaPag}
-        />
+        <div>
+          <div>
+          <CardList 
+            hospedagens={hospedagens} 
+            reservar={reservaHandle} 
+            username={name} 
+            favorites={favoriteHandle} 
+            actFavorited={actualFavorite}
+            recarrega={recarregaPag}
+          />
+          </div>
+          <div className='map-container'>
+            <MapPage coords={coords} hospedagens={hospedagens} /> 
+          </div>  
+        </div>
       }  
       {alertConfirm && <div className="alert">Reserva Confirmada com Sucesso!</div>}
       {alertCancel && <div className="alert">Reserva Cancelada com Sucesso!</div>}
