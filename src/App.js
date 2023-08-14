@@ -1,11 +1,8 @@
 import React from 'react';
-// AIzaSyBMVYb8OYBVx1Xk16LG3aG2PINkAMD2zIA
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getDoc, setDoc, addDoc, doc, arrayUnion, Firestore, arrayRemove, updateDoc, FieldValue, deleteField} from "firebase/firestore";
 import { CartOutline, HomeOutline, HeartOutline } from 'react-ionicons'
-
-import { Loader } from "@googlemaps/js-api-loader"
 
 import { DB } from "./constants/Database";
 
@@ -13,7 +10,6 @@ import Modal from './components/Modal';
 import Register from './components/Register';
 import Login from './components/Login';
 import './App.css';
-import MapPage from './Pages/MapPage.tsx';
 
 import CardList from './components/CardList';
 import CartList from './components/CartList';
@@ -35,7 +31,6 @@ function App() {
   const [alertCancel, setAlertCancel] = useState(false);
   const [alertEdit, setAlertEdit] = useState(false);
   const [alertRate, setAlertRate] = useState(false);
-  const [coords, setCoords] = useState([]);
 
   const hospendagensCollection = collection(DB, "hospedagens");
   const usersCollection = collection(DB, "users");
@@ -50,7 +45,6 @@ function App() {
     const getHospedagens = async () => {
       const data = await getDocs(hospendagensCollection);
       console.log(data);
-      handleCoords(data);
       setHospedagens(data.docs.map(doc => ({...doc.data(), id: doc.id})));
     }
     const getUsers = async () => {
@@ -70,7 +64,7 @@ function App() {
     getUsers();
     getHospedagens();
   }, []);
-  
+
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   }
@@ -101,18 +95,6 @@ function App() {
     setOpenModal(!openModal);
     if(currForm === 'register')
       setCurrentForm('login');
-  }
-
-  function handleCoords(data) {
-    let lat, lng, txt;
-    let array = []
-    data.docs.map((dt) => {
-      lat = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.latitude;
-      lng = dt._document.data.value.mapValue.fields.Coords.mapValue.fields.longitude;
-      txt = dt._document.data.value.mapValue.fields.Hotel.stringValue;
-      array.push({lat, lng, txt});
-    });
-    setCoords(array);
   }
 
   function loginHandler(email, pass) {
@@ -517,9 +499,7 @@ function App() {
           recarrega={recarregaPag}
         />
         :
-        <div>
-          <div>
-            <CardList 
+        <CardList 
           hospedagens={hospedagens} 
           reservar={reservaHandle} 
           username={name} 
@@ -527,11 +507,6 @@ function App() {
           actFavorited={actualFavorite}
           recarrega={recarregaPag}
         />
-          </div>
-          <div className='map-container'>
-            <MapPage coords={coords} hospedagens={hospedagens} /> 
-          </div>  
-        </div>
       }  
       {alertConfirm && <div className="alert">Reserva Confirmada com Sucesso!</div>}
       {alertCancel && <div className="alert">Reserva Cancelada com Sucesso!</div>}
